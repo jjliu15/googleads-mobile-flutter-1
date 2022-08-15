@@ -127,6 +127,15 @@ class _ReusableInlineExampleState extends State<ReusableInlineExample> {
         onAdOpened: (Ad ad) => print('$NativeAd onAdOpened.'),
         onAdClosed: (Ad ad) => print('$NativeAd onAdClosed.'),
       ),
+      nativeTemplateStyle: NativeTemplateStyle(
+          templateSize: TemplateSize.small,
+        callToActionBackgroundColor: Colors.red,
+        callToActionTextStyle: TextStyle(
+          fontSize: 16,
+          color: Colors.red,
+          fontFamily: 'SANS_SERIF',
+        ),
+      ),
     )..load();
 
     _adManagerBannerAd = AdManagerBannerAd(

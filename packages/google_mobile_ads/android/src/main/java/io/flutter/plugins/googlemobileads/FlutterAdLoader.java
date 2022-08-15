@@ -44,6 +44,10 @@ public class FlutterAdLoader {
     this.context = context;
   }
 
+  public Context getContext() {
+    return this.context;
+  }
+
   /** Load an app open ad. */
   public void loadAppOpen(
       @NonNull String adUnitId,

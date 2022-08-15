@@ -14,9 +14,14 @@
 
 package io.flutter.plugins.googlemobileads;
 
+import android.content.Context;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.view.LayoutInflater;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.ads.nativetemplates.NativeTemplateStyle;
+import com.google.android.ads.nativetemplates.TemplateView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.admanager.AdManagerAdRequest;
 import com.google.android.gms.ads.nativead.NativeAd;
@@ -39,7 +44,9 @@ class FlutterNativeAd extends FlutterAd {
   @Nullable private FlutterAdManagerAdRequest adManagerRequest;
   @Nullable private Map<String, Object> customOptions;
   @Nullable private NativeAdView nativeAdView;
+  @Nullable private TemplateView templateView;
   @Nullable private final FlutterNativeAdOptions nativeAdOptions;
+  @Nullable private final NativeTemplateStyleWrapper nativeTemplateStyle;
 
   static class Builder {
     @Nullable private AdInstanceManager manager;
@@ -51,6 +58,7 @@ class FlutterNativeAd extends FlutterAd {
     @Nullable private Integer id;
     @Nullable private FlutterNativeAdOptions nativeAdOptions;
     @Nullable private FlutterAdLoader flutterAdLoader;
+    @Nullable private NativeTemplateStyleWrapper nativeTemplateStyle;
 
     public Builder setAdFactory(@NonNull NativeAdFactory adFactory) {
       this.adFactory = adFactory;
@@ -92,6 +100,11 @@ class FlutterNativeAd extends FlutterAd {
       return this;
     }
 
+    public Builder setNativeTemplateStyle(@Nullable NativeTemplateStyleWrapper nativeTemplateStyle) {
+      this.nativeTemplateStyle = nativeTemplateStyle;
+      return this;
+    }
+
     public Builder setFlutterAdLoader(@NonNull FlutterAdLoader flutterAdLoader) {
       this.flutterAdLoader = flutterAdLoader;
       return this;
@@ -119,7 +132,8 @@ class FlutterNativeAd extends FlutterAd {
                 adManagerRequest,
                 flutterAdLoader,
                 customOptions,
-                nativeAdOptions);
+                nativeAdOptions,
+                nativeTemplateStyle);
       } else {
         nativeAd =
             new FlutterNativeAd(
@@ -130,7 +144,8 @@ class FlutterNativeAd extends FlutterAd {
                 request,
                 flutterAdLoader,
                 customOptions,
-                nativeAdOptions);
+                nativeAdOptions,
+                nativeTemplateStyle);
       }
       return nativeAd;
     }
@@ -144,7 +159,8 @@ class FlutterNativeAd extends FlutterAd {
       @NonNull FlutterAdRequest request,
       @NonNull FlutterAdLoader flutterAdLoader,
       @Nullable Map<String, Object> customOptions,
-      @Nullable FlutterNativeAdOptions nativeAdOptions) {
+      @Nullable FlutterNativeAdOptions nativeAdOptions,
+      @Nullable NativeTemplateStyleWrapper nativeTemplateStyle) {
     super(adId);
     this.manager = manager;
     this.adUnitId = adUnitId;
@@ -153,6 +169,7 @@ class FlutterNativeAd extends FlutterAd {
     this.flutterAdLoader = flutterAdLoader;
     this.customOptions = customOptions;
     this.nativeAdOptions = nativeAdOptions;
+    this.nativeTemplateStyle = nativeTemplateStyle;
   }
 
   protected FlutterNativeAd(
@@ -163,7 +180,8 @@ class FlutterNativeAd extends FlutterAd {
       @NonNull FlutterAdManagerAdRequest adManagerRequest,
       @NonNull FlutterAdLoader flutterAdLoader,
       @Nullable Map<String, Object> customOptions,
-      @Nullable FlutterNativeAdOptions nativeAdOptions) {
+      @Nullable FlutterNativeAdOptions nativeAdOptions,
+      @Nullable NativeTemplateStyleWrapper nativeTemplateStyle) {
     super(adId);
     this.manager = manager;
     this.adUnitId = adUnitId;
@@ -172,6 +190,7 @@ class FlutterNativeAd extends FlutterAd {
     this.flutterAdLoader = flutterAdLoader;
     this.customOptions = customOptions;
     this.nativeAdOptions = nativeAdOptions;
+    this.nativeTemplateStyle = nativeTemplateStyle;
   }
 
   @Override
@@ -199,14 +218,26 @@ class FlutterNativeAd extends FlutterAd {
   @Override
   @Nullable
   public PlatformView getPlatformView() {
-    if (nativeAdView == null) {
-      return null;
+    if (nativeAdView != null) {
+      return new FlutterPlatformView(nativeAdView);
+    } else if (templateView != null) {
+      return new FlutterPlatformView(templateView);
     }
-    return new FlutterPlatformView(nativeAdView);
+    return null;
   }
 
   void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
-    nativeAdView = adFactory.createNativeAd(nativeAd, customOptions);
+    if (nativeTemplateStyle == null) {
+      nativeAdView = adFactory.createNativeAd(nativeAd, customOptions);
+    } else {
+      LayoutInflater layoutInflater = (LayoutInflater) flutterAdLoader.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+      TemplateView templateView = (TemplateView) layoutInflater.inflate(R.layout.template_small, null);
+      NativeTemplateStyle style = new NativeTemplateStyle.Builder()
+          .build();
+      templateView.setStyles(style);
+      templateView.setNativeAd(nativeAd);
+      this.templateView = templateView;
+    }
     nativeAd.setOnPaidEventListener(new FlutterPaidEventListener(manager, this));
     manager.onAdLoaded(adId, nativeAd.getResponseInfo());
   }
@@ -216,6 +247,10 @@ class FlutterNativeAd extends FlutterAd {
     if (nativeAdView != null) {
       nativeAdView.destroy();
       nativeAdView = null;
+    }
+    if (templateView != null) {
+      templateView.destroyNativeAd();
+      templateView = null;
     }
   }
 }

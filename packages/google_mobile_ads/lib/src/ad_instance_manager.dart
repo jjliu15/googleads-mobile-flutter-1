@@ -26,6 +26,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
+import 'native_template_styles.dart';
 import 'request_configuration.dart';
 import 'ad_containers.dart';
 
@@ -514,6 +515,7 @@ class AdInstanceManager {
         'factoryId': ad.factoryId,
         'nativeAdOptions': ad.nativeAdOptions,
         'customOptions': ad.customOptions,
+        'nativeTemplateStyle': ad.nativeTemplateStyle,
       },
     );
   }
@@ -821,6 +823,9 @@ class AdMessageCodec extends StandardMessageCodec {
   static const int _valueVideoOptions = 145;
   static const int _valueInlineAdaptiveBannerAdSize = 146;
   static const int _valueRequestConfigurationParams = 148;
+  static const int _valueNativeTemplateStyle = 149;
+  static const int _valueColor = 150;
+  static const int _valueTextStyle = 151;
 
   @override
   void writeValue(WriteBuffer buffer, dynamic value) {
@@ -912,6 +917,19 @@ class AdMessageCodec extends StandardMessageCodec {
       writeValue(buffer, value.tagForChildDirectedTreatment);
       writeValue(buffer, value.tagForUnderAgeOfConsent);
       writeValue(buffer, value.testDeviceIds);
+    } else if (value is NativeTemplateStyle) {
+      buffer.putUint8(_valueNativeTemplateStyle);
+      writeValue(buffer, value.templateSize.index);
+      writeValue(buffer, value.callToActionTextStyle);
+      writeValue(buffer, value.callToActionBackgroundColor);
+    } else if (value is TextStyle) {
+      buffer.putUint8(_valueTextStyle);
+      writeValue(buffer, value.fontFamily);
+      writeValue(buffer, value.color);
+      writeValue(buffer, value.fontSize);
+    } else if (value is Color) {
+      buffer.putUint8(_valueColor);
+      writeValue(buffer, value.value); // rgba value
     } else {
       super.writeValue(buffer, value);
     }

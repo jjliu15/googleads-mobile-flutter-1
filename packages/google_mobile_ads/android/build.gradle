@@ -33,6 +33,7 @@ android {
     dependencies {
       api 'com.google.android.gms:play-services-ads:21.0.0'
       implementation 'androidx.lifecycle:lifecycle-process:2.2.0'
+      implementation project(':nativetemplates')
       testImplementation 'junit:junit:4.12'
       testImplementation 'org.hamcrest:hamcrest:2.2'
       testImplementation 'org.mockito:mockito-inline:3.9.0'

@@ -54,6 +54,9 @@ class AdMessageCodec extends StandardMessageCodec {
   private static final byte VALUE_VIDEO_OPTIONS = (byte) 145;
   private static final byte VALUE_INLINE_ADAPTIVE_BANNER_AD_SIZE = (byte) 146;
   private static final byte VALUE_REQUEST_CONFIGURATION_PARAMS = (byte) 148;
+  private static final byte VALUE_NATIVE_TEMPLATE_STYLE = (byte) 149;
+  private static final byte VALUE_COLOR = (byte) 150;
+  private static final byte VALUE_TEXT_STYLE = (byte) 151;
 
   @NonNull Context context;
   @NonNull final FlutterAdSize.AdSizeFactory adSizeFactory;
@@ -315,6 +318,18 @@ class AdMessageCodec extends StandardMessageCodec {
         rcb.setTagForUnderAgeOfConsent((Integer) readValueOfType(buffer.get(), buffer));
         rcb.setTestDeviceIds((List<String>) readValueOfType(buffer.get(), buffer));
         return rcb.build();
+      case VALUE_NATIVE_TEMPLATE_STYLE:
+        Integer size = (Integer) readValueOfType(buffer.get(), buffer);
+        TextStyleWrapper callToActionTextStyle = (TextStyleWrapper) readValueOfType(buffer.get(), buffer);
+        ColorWrapper callToActionColor = (ColorWrapper) readValueOfType(buffer.get(), buffer);
+        return new NativeTemplateStyleWrapper(size, callToActionTextStyle, callToActionColor);
+      case VALUE_COLOR:
+        return new ColorWrapper((Integer) readValueOfType(buffer.get(), buffer));
+      case VALUE_TEXT_STYLE:
+        String fontFamily = (String) readValueOfType(buffer.get(), buffer);
+        ColorWrapper colorWrapper = (ColorWrapper) readValueOfType(buffer.get(), buffer);
+        Double fontSize = (Double) readValueOfType(buffer.get(), buffer);
+        return new TextStyleWrapper(fontFamily, colorWrapper, fontSize);
       default:
         return super.readValueOfType(type, buffer);
     }

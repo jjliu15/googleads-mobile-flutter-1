@@ -24,6 +24,7 @@ import 'package:visibility_detector/visibility_detector.dart';
 
 import 'ad_instance_manager.dart';
 import 'ad_listeners.dart';
+import 'native_template_styles.dart';
 
 /// Error information about why an ad operation failed.
 class AdError {
@@ -964,6 +965,7 @@ class NativeAd extends AdWithView {
     required this.request,
     this.nativeAdOptions,
     this.customOptions,
+    this.nativeTemplateStyle,
   })  : adManagerRequest = null,
         assert(request != null),
         super(adUnitId: adUnitId, listener: listener);
@@ -981,6 +983,7 @@ class NativeAd extends AdWithView {
     required this.adManagerRequest,
     this.nativeAdOptions,
     this.customOptions,
+    this.nativeTemplateStyle,
   })  : request = null,
         assert(adManagerRequest != null),
         super(adUnitId: adUnitId, listener: listener);
@@ -1005,6 +1008,12 @@ class NativeAd extends AdWithView {
 
   /// Options to configure the native ad request.
   final NativeAdOptions? nativeAdOptions;
+
+  /// [NativeTemplateStyle] for the ad.
+  ///
+  /// If this is defined, the plugin will inflate and render the native ad
+  /// view based on this.
+  final NativeTemplateStyle? nativeTemplateStyle;
 
   @override
   Future<void> load() async {

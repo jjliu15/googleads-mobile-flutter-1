@@ -406,6 +406,7 @@ public class GoogleMobileAdsPlugin implements FlutterPlugin, ActivityAware, Meth
                 .setCustomOptions(call.<Map<String, Object>>argument("customOptions"))
                 .setId(call.<Integer>argument("adId"))
                 .setNativeAdOptions(call.<FlutterNativeAdOptions>argument("nativeAdOptions"))
+                .setNativeTemplateStyle(call.<NativeTemplateStyleWrapper>argument("nativeTemplateStyle"))
                 .setFlutterAdLoader(new FlutterAdLoader(context))
                 .build();
         instanceManager.trackAd(nativeAd, call.<Integer>argument("adId"));
