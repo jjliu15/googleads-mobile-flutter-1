@@ -36,6 +36,9 @@ typedef NS_ENUM(NSInteger, FLTAdMobField) {
   FLTAdmobFieldVideoOptions = 145,
   FLTAdmobFieldInlineAdaptiveAdSize = 146,
   FLTAdmobRequestConfigurationParams = 148,
+  FLTAdmobNativeTemplateStyle = 149,
+  FLTAdmobTextStyle = 150,
+  FLTAdmobColor = 151,
 };
 
 @interface FLTGoogleMobileAdsWriter : FlutterStandardWriter
@@ -244,6 +247,22 @@ typedef NS_ENUM(NSInteger, FLTAdMobField) {
                   width:[self readValueOfType:[self readByte]]
               maxHeight:[self readValueOfType:[self readByte]]
             orientation:[self readValueOfType:[self readByte]]];
+  }
+  case FLTAdmobNativeTemplateStyle: {
+    NSNumber *size = [self readValueOfType:[self readByte]];
+    FLTTextStyle *textStyle = [self readValueOfType:[self readByte]];
+    FLTColor *backgroundColor = [self readValueOfType:[self readByte]];
+    return [[FLTNativeTemplateStyle alloc] initWithSize:size textStyle:textStyle backgroundColor: backgroundColor];
+  }
+  case FLTAdmobColor: {
+    NSNumber *value = [self readValueOfType:[self readByte]];
+    return [[FLTColor alloc] initWithValue: value];
+  }
+  case FLTAdmobTextStyle: {
+    NSString *fontFamily = [self readValueOfType:[self readByte]];
+    FLTColor *color = [self readValueOfType:[self readByte]];
+    NSNumber *fontSize = [self readValueOfType:[self readByte]];
+    return [[FLTTextStyle alloc] initWithFontFamily:fontFamily color:color fontSize:fontSize];
   }
   }
   return [super readValueOfType:type];

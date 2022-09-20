@@ -370,7 +370,8 @@
              customOptions:call.arguments[@"customOptions"]
         rootViewController:rootController
                       adId:call.arguments[@"adId"]
-           nativeAdOptions:call.arguments[@"nativeAdOptions"]];
+           nativeAdOptions:call.arguments[@"nativeAdOptions"]
+         nativeTemplateStyle:call.arguments[@"nativeTemplateStyle"]];
     [_manager loadAd:ad];
     result(nil);
   } else if ([call.method isEqualToString:@"loadInterstitialAd"]) {

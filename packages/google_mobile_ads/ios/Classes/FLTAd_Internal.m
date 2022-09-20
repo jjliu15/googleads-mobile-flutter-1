@@ -15,6 +15,8 @@
 #import "FLTAd_Internal.h"
 #import "FLTAdUtil.h"
 #import "FLTConstants.h"
+#import "NativeTemplates/nativetemplates/GADTSmallTemplateView.h"
+#import "NativeTemplates/nativetemplates/GADTTemplateView.h"
 
 @implementation FLTAdSize
 - (instancetype _Nonnull)initWithWidth:(NSNumber *_Nonnull)width
@@ -1071,6 +1073,7 @@
   GADNativeAdView *_view;
   GADAdLoader *_adLoader;
   FLTNativeAdOptions *_nativeAdOptions;
+  FLTNativeTemplateStyle *_nativeTemplateStyle;
 }
 
 - (instancetype _Nonnull)
@@ -1080,7 +1083,8 @@
          customOptions:(NSDictionary<NSString *, id> *_Nullable)customOptions
     rootViewController:(UIViewController *_Nonnull)rootViewController
                   adId:(NSNumber *_Nonnull)adId
-       nativeAdOptions:(FLTNativeAdOptions *_Nullable)nativeAdOptions {
+       nativeAdOptions:(FLTNativeAdOptions *_Nullable)nativeAdOptions
+   nativeTemplateStyle:(FLTNativeTemplateStyle *_Nullable)nativeTemplateStyle {
   self = [super init];
   if (self) {
     self.adId = adId;
@@ -1099,6 +1103,7 @@
                                       adTypes:@[ GADAdLoaderAdTypeNative ]
                                       options:adLoaderOptions];
     _nativeAdOptions = nativeAdOptions;
+    _nativeTemplateStyle = nativeTemplateStyle;
     self.adLoader.delegate = self;
   }
   return self;
@@ -1127,8 +1132,39 @@
   // Use Nil instead of Null to fix crash with Swift integrations.
   NSDictionary<NSString *, id> *customOptions =
       [[NSNull null] isEqual:_customOptions] ? nil : _customOptions;
-  _view = [_nativeAdFactory createNativeAd:nativeAd
-                             customOptions:customOptions];
+  if (_nativeTemplateStyle) {
+    GADTSmallTemplateView *templateView = [[GADTSmallTemplateView alloc] init];
+    _view = templateView;
+    NSString *myBlueColor = @"#5C84F0";
+    NSDictionary *styles = @{
+        GADTNativeTemplateStyleKeyCallToActionFont : [UIFont systemFontOfSize:15.0],
+        GADTNativeTemplateStyleKeyCallToActionFontColor : UIColor.whiteColor,
+        GADTNativeTemplateStyleKeyCallToActionBackgroundColor :
+            [GADTTemplateView colorFromHexString:myBlueColor],
+        GADTNativeTemplateStyleKeySecondaryFont : [UIFont systemFontOfSize:15.0],
+        GADTNativeTemplateStyleKeySecondaryFontColor : UIColor.grayColor,
+        GADTNativeTemplateStyleKeySecondaryBackgroundColor : UIColor.whiteColor,
+        GADTNativeTemplateStyleKeyPrimaryFont : [UIFont systemFontOfSize:15.0],
+        GADTNativeTemplateStyleKeyPrimaryFontColor : UIColor.blackColor,
+        GADTNativeTemplateStyleKeyPrimaryBackgroundColor : UIColor.whiteColor,
+        GADTNativeTemplateStyleKeyTertiaryFont : [UIFont systemFontOfSize:15.0],
+        GADTNativeTemplateStyleKeyTertiaryFontColor : UIColor.grayColor,
+        GADTNativeTemplateStyleKeyTertiaryBackgroundColor : UIColor.whiteColor,
+        GADTNativeTemplateStyleKeyMainBackgroundColor : UIColor.whiteColor,
+        GADTNativeTemplateStyleKeyCornerRadius : [NSNumber numberWithFloat:7.0],
+    };
+
+    templateView.styles = styles;
+    templateView.nativeAd = nativeAd;
+//    [templateView addHorizontalConstraintsToSuperviewWidth];
+//    [templateView addVerticalCenterConstraintToSuperview];
+    
+    
+  } else {
+    _view = [_nativeAdFactory createNativeAd:nativeAd
+                               customOptions:customOptions];
+  }
+
   nativeAd.delegate = self;
 
   __weak FLTNativeAd *weakSelf = self;
@@ -1350,6 +1386,50 @@
     [options addObject:_videoOptions.asGADVideoOptions];
   }
   return options;
+}
+
+@end
+
+@implementation FLTColor
+
+- (instancetype _Nonnull)initWithValue:(NSNumber *_Nonnull)value {
+  self = [super init];
+  if (self) {
+    _value = value;
+  }
+  return self;
+}
+
+@end
+
+@implementation FLTTextStyle
+
+- (instancetype _Nonnull)initWithFontFamily:(NSString *_Nonnull)fontFamily
+                                      color:(FLTColor *_Nonnull)color
+                                   fontSize:(NSNumber *_Nonnull)fontSize {
+  self = [super init];
+  if (self) {
+    _fontFamily = fontFamily;
+    _color = color;
+    _fontSize = fontSize;
+  }
+  return self;
+}
+
+@end
+
+@implementation FLTNativeTemplateStyle
+
+- (instancetype _Nonnull)initWithSize:(NSNumber *_Nonnull)size
+                            textStyle:(FLTTextStyle *_Nonnull)textStyle
+                      backgroundColor:(FLTColor *_Nonnull)backgroundColor {
+  self = [super init];
+  if (self) {
+    _size = size;
+    _textStyle = textStyle;
+    _backgroundColor = backgroundColor;
+  }
+  return self;
 }
 
 @end

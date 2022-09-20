@@ -26,7 +26,6 @@ public class NativeTemplateStyleWrapper {
     if (callToActionTextStyle != null) {
       builder.withCallToActionTextSize(callToActionTextStyle.getFontSize());
       builder.withCallToActionTypefaceColor(callToActionTextStyle.getTypeFaceColor());
-      builder.withCallToActionTextTypeface()
     }
     return builder.build();
   }

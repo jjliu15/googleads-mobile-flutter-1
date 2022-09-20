@@ -292,7 +292,8 @@
          customOptions:(NSDictionary<NSString *, id> *_Nullable)customOptions
     rootViewController:(UIViewController *_Nonnull)rootViewController
                   adId:(NSNumber *_Nonnull)adId
-       nativeAdOptions:(FLTNativeAdOptions *_Nullable)nativeAdOptions;
+       nativeAdOptions:(FLTNativeAdOptions *_Nullable)nativeAdOptions
+       nativeTemplateStyle:(FLTNativeTemplateStyle *_Nullable)nativeTemplateStyle;
 - (GADAdLoader *_Nonnull)adLoader;
 @end
 
@@ -310,4 +311,32 @@
 - (instancetype _Nonnull)initWithValue:(NSDecimalNumber *_Nonnull)value
                              precision:(NSInteger)precision
                           currencyCode:(NSString *_Nonnull)currencyCode;
+@end
+
+@interface FLTColor : NSObject
+@property(readonly) NSNumber *_Nonnull value;
+- (instancetype _Nonnull)initWithValue:(NSNumber *_Nonnull)value;
+
+@end
+
+@interface FLTTextStyle : NSObject
+@property(readonly) NSString *_Nonnull fontFamily;
+@property(readonly) FLTColor *_Nonnull color;
+@property(readonly) NSNumber *_Nonnull fontSize;
+
+
+- (instancetype _Nonnull)initWithFontFamily:(NSString *_Nonnull)fontFamily
+                                      color:(FLTColor *_Nonnull)color
+                                   fontSize:(NSNumber *_Nonnull)fontSize;
+
+@end
+
+@interface FLTNativeTemplateStyle : NSObject
+
+@property(readonly) NSNumber *_Nonnull size;
+@property(readonly) FLTTextStyle *_Nonnull textStyle;
+@property(readonly) FLTColor *_Nonnull backgroundColor;
+- (instancetype _Nonnull)initWithSize:(NSNumber *_Nonnull)size
+                            textStyle:(FLTTextStyle *_Nonnull)textStyle
+                      backgroundColor:(FLTColor *_Nonnull)backgroundColor;
 @end
