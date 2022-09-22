@@ -15,6 +15,7 @@
 package io.flutter.plugins.googlemobileads;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -232,7 +233,9 @@ class FlutterNativeAd extends FlutterAd {
     } else {
       LayoutInflater layoutInflater = (LayoutInflater) flutterAdLoader.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
       TemplateView templateView = (TemplateView) layoutInflater.inflate(R.layout.template_small, null);
+      Typeface.MONOSPACE;
       NativeTemplateStyle style = new NativeTemplateStyle.Builder()
+          .withCallToActionTextTypeface()
           .build();
       templateView.setStyles(style);
       templateView.setNativeAd(nativeAd);

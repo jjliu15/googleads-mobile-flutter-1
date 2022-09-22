@@ -37,8 +37,8 @@ typedef NS_ENUM(NSInteger, FLTAdMobField) {
   FLTAdmobFieldInlineAdaptiveAdSize = 146,
   FLTAdmobRequestConfigurationParams = 148,
   FLTAdmobNativeTemplateStyle = 149,
-  FLTAdmobTextStyle = 150,
-  FLTAdmobColor = 151,
+  FLTAdmobColor = 150,
+  FLTAdmobTextStyle = 151,
 };
 
 @interface FLTGoogleMobileAdsWriter : FlutterStandardWriter

@@ -16,6 +16,7 @@
 #import "FLTAdUtil.h"
 #import "FLTConstants.h"
 #import "NativeTemplates/nativetemplates/GADTSmallTemplateView.h"
+#import "NativeTemplates/nativetemplates/GADTMediumTemplateView.h"
 #import "NativeTemplates/nativetemplates/GADTTemplateView.h"
 
 @implementation FLTAdSize
@@ -1140,7 +1141,7 @@
   NSDictionary<NSString *, id> *customOptions =
       [[NSNull null] isEqual:_customOptions] ? nil : _customOptions;
   if (_nativeTemplateStyle) {
-    GADTSmallTemplateView *templateView = [[GADTSmallTemplateView alloc] init];
+    GADTMediumTemplateView *templateView = [[GADTMediumTemplateView alloc] init];
     _view = templateView;
     NSString *myBlueColor = @"#5C84F0";
     NSDictionary *styles = @{
