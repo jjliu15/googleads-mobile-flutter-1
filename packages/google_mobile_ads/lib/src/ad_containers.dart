@@ -20,7 +20,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:visibility_detector/visibility_detector.dart';
+// import 'package:visibility_detector/visibility_detector.dart';
 
 import 'ad_instance_manager.dart';
 import 'ad_listeners.dart';
@@ -632,7 +632,7 @@ class AdWidget extends StatefulWidget {
 class _AdWidgetState extends State<AdWidget> {
   bool _adIdAlreadyMounted = false;
   bool _adLoadNotCalled = false;
-  bool _firstVisibleOccurred = false;
+  // bool _firstVisibleOccurred = false;
 
   @override
   void initState() {
@@ -684,7 +684,7 @@ class _AdWidgetState extends State<AdWidget> {
       // where impressions are erroneously fired due to how platform views are
       // rendered.
       // TODO (jjliu15): Remove this after the flutter issue is resolved.
-      if (_firstVisibleOccurred) {
+      // if (_firstVisibleOccurred) {
         return PlatformViewLink(
           viewType: '${instanceManager.channel.name}/ad_widget',
           surfaceFactory:
@@ -708,21 +708,21 @@ class _AdWidgetState extends State<AdWidget> {
               ..create();
           },
         );
-      } else {
-        final adId = instanceManager.adIdFor(widget.ad);
-        return VisibilityDetector(
-          key: Key('android-platform-view-$adId'),
-          onVisibilityChanged: (visibilityInfo) {
-            if (!_firstVisibleOccurred &&
-                visibilityInfo.visibleFraction > 0.01) {
-              setState(() {
-                _firstVisibleOccurred = true;
-              });
-            }
-          },
-          child: Container(),
-        );
-      }
+      // } else {
+      //   final adId = instanceManager.adIdFor(widget.ad);
+      //   return VisibilityDetector(
+      //     key: Key('android-platform-view-$adId'),
+      //     onVisibilityChanged: (visibilityInfo) {
+      //       if (!_firstVisibleOccurred &&
+      //           visibilityInfo.visibleFraction > 0.01) {
+      //         setState(() {
+      //           _firstVisibleOccurred = true;
+      //         });
+      //       }
+      //     },
+      //     child: Container(),
+      //   );
+      // }
     }
 
     return UiKitView(

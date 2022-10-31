@@ -103,6 +103,7 @@ class _ReusableInlineExampleState extends State<ReusableInlineExample> {
           },
           onAdOpened: (Ad ad) => print('$BannerAd onAdOpened.'),
           onAdClosed: (Ad ad) => print('$BannerAd onAdClosed.'),
+          onAdImpression: (Ad ad) => print('$BannerAd onAdImpression.'),
         ),
         request: AdRequest())
       ..load();
@@ -126,6 +127,7 @@ class _ReusableInlineExampleState extends State<ReusableInlineExample> {
         },
         onAdOpened: (Ad ad) => print('$NativeAd onAdOpened.'),
         onAdClosed: (Ad ad) => print('$NativeAd onAdClosed.'),
+        onAdImpression: (Ad ad) => print('$NativeAd onAdImpression.'),
       ),
     )..load();
 
@@ -146,6 +148,7 @@ class _ReusableInlineExampleState extends State<ReusableInlineExample> {
         },
         onAdOpened: (Ad ad) => print('$AdManagerBannerAd onAdOpened.'),
         onAdClosed: (Ad ad) => print('$AdManagerBannerAd onAdClosed.'),
+        onAdImpression: (Ad ad) => print('$AdManagerBannerAd onAdImpression.'),
       ),
     )..load();
   }

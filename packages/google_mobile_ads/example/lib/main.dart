@@ -22,6 +22,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'anchored_adaptive_example.dart';
 import 'fluid_example.dart';
 import 'inline_adaptive_example.dart';
+import 'listview_banner.dart';
 import 'reusable_inline_example.dart';
 
 void main() {
@@ -263,6 +264,13 @@ class _MyAppState extends State<MyApp> {
                             builder: (context) => AnchoredAdaptiveExample()),
                       );
                       break;
+                    case 'listview banner':
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ListViewBannerExample()),
+                      );
+                      break;
                     default:
                       throw AssertionError('unexpected button: $result');
                   }
@@ -291,6 +299,10 @@ class _MyAppState extends State<MyApp> {
                   PopupMenuItem<String>(
                     value: 'Anchored adaptive',
                     child: Text('Anchored adaptive'),
+                  ),
+                  PopupMenuItem<String>(
+                    value: 'listview banner',
+                    child: Text('listview banner'),
                   ),
                 ],
               ),
