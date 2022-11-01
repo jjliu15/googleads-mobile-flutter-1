@@ -8,8 +8,21 @@ import 'package:google_mobile_ads/src/nativetemplates/native_template_text_style
 /// Can be used when loading a [NativeAd].
 class NativeTemplateStyle {
 
+  /// Create a [NativeTemplateStyle].
+  ///
+  /// Only templateType is required.
+  NativeTemplateStyle({
+    required this.templateType,
+    this.callToActionTextStyle,
+    this.primaryTextStyle,
+    this.secondaryTextStyle,
+    this.tertiaryTextStyle,
+    this.mainBackgroundColor,
+    this.cornerRadius,
+});
+
   /// The [TemplateType] to use.
-  TemplateType? templateType;
+  TemplateType templateType;
 
   /// The [NativeTemplateTextStyle] for the call to action.
   NativeTemplateTextStyle? callToActionTextStyle;

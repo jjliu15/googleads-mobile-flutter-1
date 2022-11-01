@@ -995,13 +995,13 @@ class AdManagerBannerAd extends AdWithView {
 class NativeAd extends AdWithView {
   /// Creates a [NativeAd].
   ///
-  /// A valid [adUnitId], nonnull [listener], nonnull [request], and nonnull
-  /// [factoryId] is required.
+  /// A valid [adUnitId], nonnull [listener], nonnull [request], and either
+  /// [factoryId] or [nativeTemplateStyle] is required.
   /// Use [nativeAdOptions] to customize the native ad request.
   /// Use [customOptions] to pass data to your native ad factory.
   NativeAd({
     required String adUnitId,
-    required this.factoryId,
+    this.factoryId,
     required this.listener,
     required this.request,
     this.nativeAdOptions,
@@ -1009,28 +1009,30 @@ class NativeAd extends AdWithView {
     this.nativeTemplateStyle,
   })  : adManagerRequest = null,
         assert(request != null),
+        assert(nativeTemplateStyle != null || factoryId != null),
         super(adUnitId: adUnitId, listener: listener);
 
   /// Creates a [NativeAd] with Ad Manager.
   ///
   /// A valid [adUnitId], nonnull [listener], nonnull [adManagerRequest], and
-  /// nonnull [factoryId] is required.
+  /// either [factoryId] or [nativeTemplateStyle] is required.
   /// Use [nativeAdOptions] to customize the native ad request.
   /// Use [customOptions] to pass data to your native ad factory.
   NativeAd.fromAdManagerRequest({
     required String adUnitId,
-    required this.factoryId,
+    this.factoryId,
     required this.listener,
     required this.adManagerRequest,
     this.nativeAdOptions,
     this.customOptions,
     this.nativeTemplateStyle,
   })  : request = null,
-        assert(adManagerRequest != null),
-        super(adUnitId: adUnitId, listener: listener);
+      assert(adManagerRequest != null),
+      assert(nativeTemplateStyle != null || factoryId != null),
+      super(adUnitId: adUnitId, listener: listener);
 
   /// An identifier for the factory that creates the Platform view.
-  final String factoryId;
+  final String? factoryId;
 
   /// A listener for receiving events in the ad lifecycle.
   @override
