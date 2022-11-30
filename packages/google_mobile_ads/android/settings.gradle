@@ -1,1 +1,3 @@
 rootProject.name = 'google_mobile_ads'
+include ':nativetemplates'
+project(":nativetemplates").projectDir = rootProject.projectDir.toPath().resolve('nativetemplates').toFile()

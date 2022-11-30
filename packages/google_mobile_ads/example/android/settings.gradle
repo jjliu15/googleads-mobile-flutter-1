@@ -13,3 +13,7 @@ plugins.each { name, path ->
     include ":$name"
     project(":$name").projectDir = pluginDirectory
 }
+
+include ":nativetemplates"
+project(":nativetemplates").projectDir =
+    flutterProjectRoot.resolve('google_mobile_ads').resolve('android').resolve('nativeTemplates').toFile();
