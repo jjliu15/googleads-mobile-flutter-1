@@ -16,6 +16,7 @@ package com.google.android.ads.nativetemplates;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
@@ -119,24 +120,20 @@ public class TemplateView extends FrameLayout {
       callToActionView.setTypeface(ctaTypeface);
     }
 
-    int primaryTypefaceColor = styles.getPrimaryTextTypefaceColor();
-    if (primaryTypefaceColor > 0 && primaryView != null) {
-      primaryView.setTextColor(primaryTypefaceColor);
+    if (styles.getPrimaryTextTypefaceColor() != null && primaryView != null) {
+      primaryView.setTextColor(styles.getPrimaryTextTypefaceColor());
     }
 
-    int secondaryTypefaceColor = styles.getSecondaryTextTypefaceColor();
-    if (secondaryTypefaceColor > 0 && secondaryView != null) {
-      secondaryView.setTextColor(secondaryTypefaceColor);
+    if (styles.getSecondaryTextTypefaceColor() != null && secondaryView != null) {
+      secondaryView.setTextColor(styles.getSecondaryTextTypefaceColor());
     }
 
-    int tertiaryTypefaceColor = styles.getTertiaryTextTypefaceColor();
-    if (tertiaryTypefaceColor > 0 && tertiaryView != null) {
-      tertiaryView.setTextColor(tertiaryTypefaceColor);
+    if (styles.getTertiaryTextTypefaceColor() != null && tertiaryView != null) {
+      tertiaryView.setTextColor(styles.getTertiaryTextTypefaceColor());
     }
 
-    int ctaTypefaceColor = styles.getCallToActionTypefaceColor();
-    if (ctaTypefaceColor > 0 && callToActionView != null) {
-      callToActionView.setTextColor(ctaTypefaceColor);
+    if (styles.getCallToActionTypefaceColor() != null && callToActionView != null) {
+      callToActionView.setTextColor(styles.getCallToActionTypefaceColor());
     }
 
     float ctaTextSize = styles.getCallToActionTextSize();
@@ -268,17 +265,17 @@ public class TemplateView extends FrameLayout {
   private void initView(Context context, AttributeSet attributeSet) {
 
     TypedArray attributes =
-        context.getTheme().obtainStyledAttributes(attributeSet, R.styleable.TemplateView, 0, 0);
+            context.getTheme().obtainStyledAttributes(attributeSet, R.styleable.TemplateView, 0, 0);
 
     try {
       templateType =
-          attributes.getResourceId(
-              R.styleable.TemplateView_gnt_template_type, R.layout.gnt_medium_template_view);
+              attributes.getResourceId(
+                      R.styleable.TemplateView_gnt_template_type, R.layout.gnt_medium_template_view);
     } finally {
       attributes.recycle();
     }
     LayoutInflater inflater =
-        (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     inflater.inflate(templateType, this);
   }
 

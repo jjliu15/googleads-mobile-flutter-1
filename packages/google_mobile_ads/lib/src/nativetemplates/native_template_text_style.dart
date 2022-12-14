@@ -4,6 +4,15 @@ import 'package:google_mobile_ads/src/nativetemplates/native_template_font_style
 
 /// Text style options for native templates.
 class NativeTemplateTextStyle {
+
+  /// Create a [NativeTemplateTextStyle].
+  NativeTemplateTextStyle({
+    this.textColor,
+    this.backgroundColor,
+    this.style,
+    this.size,
+  });
+
   /// Text color
   Color? textColor;
   /// Background color

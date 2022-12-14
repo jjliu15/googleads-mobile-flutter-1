@@ -518,6 +518,7 @@ class AdInstanceManager {
         'factoryId': ad.factoryId,
         'nativeAdOptions': ad.nativeAdOptions,
         'customOptions': ad.customOptions,
+        'nativeTemplateStyle': ad.nativeTemplateStyle,
       },
     );
   }
@@ -930,12 +931,14 @@ class AdMessageCodec extends StandardMessageCodec {
     } else if (value is NativeTemplateStyle) {
       buffer.putUint8(_valueNativeTemplateStyle);
       writeValue(buffer, value.templateType);
+      writeValue(buffer, value.mainBackgroundColor);
       writeValue(buffer, value.callToActionTextStyle);
       writeValue(buffer, value.primaryTextStyle);
       writeValue(buffer, value.secondaryTextStyle);
       writeValue(buffer, value.tertiaryTextStyle);
-      writeValue(buffer, value.mainBackgroundColor);
-      writeValue(buffer, value.cornerRadius);
+      if (defaultTargetPlatform == TargetPlatform.iOS) {
+        writeValue(buffer, value.cornerRadius);
+      }
     } else if (value is TemplateType) {
       buffer.putUint8(_valueNativeTemplateType);
       writeValue(buffer, value.index);
@@ -947,7 +950,10 @@ class AdMessageCodec extends StandardMessageCodec {
       writeValue(buffer, value.size);
     } else if (value is Color) {
       buffer.putUint8(_valueColor);
-      writeValue(buffer, value.value);
+      writeValue(buffer, value.alpha);
+      writeValue(buffer, value.red);
+      writeValue(buffer, value.green);
+      writeValue(buffer, value.blue);
     } else if (value is NativeTemplateFontStyle) {
       buffer.putUint8(_valueNativeTemplateFontStyle);
       writeValue(buffer, value.index);
