@@ -345,10 +345,10 @@
   } else if ([call.method isEqualToString:@"loadNativeAd"]) {
     NSString *factoryId = call.arguments[@"factoryId"];
     id<FLTNativeAdFactory> factory = _nativeAdFactories[factoryId];
-
-    if (!factory) {
+    FLTNativeTemplateStyle *templateStyle = call.arguments[@"nativeTemplateStyle"];
+    if ([FLTAdUtil isNull:factory] && [FLTAdUtil isNull:templateStyle]) {
       NSString *message =
-          [NSString stringWithFormat:@"Can't find NativeAdFactory with id: %@",
+          [NSString stringWithFormat:@"Can't find NativeAdFactory with id: %@ and nativeTemplateStyle is null",
                                      factoryId];
       result([FlutterError errorWithCode:@"NativeAdError"
                                  message:message
@@ -370,7 +370,8 @@
              customOptions:call.arguments[@"customOptions"]
         rootViewController:rootController
                       adId:call.arguments[@"adId"]
-           nativeAdOptions:call.arguments[@"nativeAdOptions"]];
+           nativeAdOptions:call.arguments[@"nativeAdOptions"]
+       nativeTemplateStyle:call.arguments[@"nativeTemplateStyle"]];
     [_manager loadAd:ad];
     result(nil);
   } else if ([call.method isEqualToString:@"loadInterstitialAd"]) {

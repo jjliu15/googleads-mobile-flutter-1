@@ -16,7 +16,11 @@
 #import "FLTGoogleMobileAdsPlugin.h"
 #import "FLTMediationNetworkExtrasProvider.h"
 #import "FLTMobileAds_Internal.h"
+#import "FLTNativeTemplateStyle.h"
 #import <GoogleMobileAds/GoogleMobileAds.h>
+#import <UIKit/UIKit.h>
+#import "GADTTemplateView.h"
+
 
 @class FLTAdInstanceManager;
 @protocol FLTNativeAdFactory;
@@ -299,7 +303,8 @@
          customOptions:(NSDictionary<NSString *, id> *_Nullable)customOptions
     rootViewController:(UIViewController *_Nonnull)rootViewController
                   adId:(NSNumber *_Nonnull)adId
-       nativeAdOptions:(FLTNativeAdOptions *_Nullable)nativeAdOptions;
+       nativeAdOptions:(FLTNativeAdOptions *_Nullable)nativeAdOptions
+   nativeTemplateStyle:(FLTNativeTemplateStyle *_Nullable)nativeTemplateStyle;
 - (GADAdLoader *_Nonnull)adLoader;
 @end
 
@@ -318,3 +323,4 @@
                              precision:(NSInteger)precision
                           currencyCode:(NSString *_Nonnull)currencyCode;
 @end
+
