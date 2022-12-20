@@ -16,7 +16,6 @@ package com.google.android.ads.nativetemplates;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
@@ -34,9 +33,7 @@ import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdView;
 import io.flutter.plugins.googlemobileads.R;
 
-/**
- * Base class for a template view. *
- */
+/** Base class for a template view. * */
 public class TemplateView extends FrameLayout {
 
   private int templateType;
@@ -265,17 +262,17 @@ public class TemplateView extends FrameLayout {
   private void initView(Context context, AttributeSet attributeSet) {
 
     TypedArray attributes =
-            context.getTheme().obtainStyledAttributes(attributeSet, R.styleable.TemplateView, 0, 0);
+        context.getTheme().obtainStyledAttributes(attributeSet, R.styleable.TemplateView, 0, 0);
 
     try {
       templateType =
-              attributes.getResourceId(
-                      R.styleable.TemplateView_gnt_template_type, R.layout.gnt_medium_template_view);
+          attributes.getResourceId(
+              R.styleable.TemplateView_gnt_template_type, R.layout.gnt_medium_template_view);
     } finally {
       attributes.recycle();
     }
     LayoutInflater inflater =
-            (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     inflater.inflate(templateType, this);
   }
 

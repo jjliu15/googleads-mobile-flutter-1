@@ -18,8 +18,6 @@ import android.content.Context;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.google.android.ads.nativetemplates.NativeTemplateStyle;
 import com.google.android.ads.nativetemplates.TemplateView;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.admanager.AdManagerAdRequest;
@@ -28,11 +26,9 @@ import com.google.android.gms.ads.nativead.NativeAd.OnNativeAdLoadedListener;
 import com.google.android.gms.ads.nativead.NativeAdOptions;
 import com.google.android.gms.ads.nativead.NativeAdView;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
-
 import io.flutter.plugin.platform.PlatformView;
 import io.flutter.plugins.googlemobileads.GoogleMobileAdsPlugin.NativeAdFactory;
 import io.flutter.plugins.googlemobileads.nativetemplates.FlutterNativeTemplateStyle;
-
 import java.util.Map;
 
 /** A wrapper for {@link NativeAd}. */
@@ -51,7 +47,6 @@ class FlutterNativeAd extends FlutterAd {
   @Nullable private final FlutterNativeTemplateStyle nativeTemplateStyle;
   @Nullable private TemplateView templateView;
   @NonNull private final Context context;
-
 
   static class Builder {
     @Nullable private AdInstanceManager manager;
@@ -125,8 +120,8 @@ class FlutterNativeAd extends FlutterAd {
     }
 
     @CanIgnoreReturnValue
-    public Builder setNativeTemplateStyle(@Nullable FlutterNativeTemplateStyle nativeTemplateStyle)
-    {
+    public Builder setNativeTemplateStyle(
+        @Nullable FlutterNativeTemplateStyle nativeTemplateStyle) {
       this.nativeTemplateStyle = nativeTemplateStyle;
       return this;
     }

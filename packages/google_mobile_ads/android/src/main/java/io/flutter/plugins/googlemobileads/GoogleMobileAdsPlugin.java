@@ -397,7 +397,7 @@ public class GoogleMobileAdsPlugin implements FlutterPlugin, ActivityAware, Meth
         final FlutterNativeTemplateStyle templateStyle = call.argument("nativeTemplateStyle");
         if (factory == null && templateStyle == null) {
           final String message =
-            String.format("No NativeAdFactory with id: %s or nativeTemplateStyle", factoryId);
+              String.format("No NativeAdFactory with id: %s or nativeTemplateStyle", factoryId);
           result.error("NativeAdError", message, null);
           break;
         }

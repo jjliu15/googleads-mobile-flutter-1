@@ -18,12 +18,9 @@ package io.flutter.plugins.googlemobileads;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-
-import com.google.android.ads.nativetemplates.NativeTemplateStyle;
 import com.google.android.gms.ads.RequestConfiguration;
 import io.flutter.plugin.common.StandardMessageCodec;
 import io.flutter.plugins.googlemobileads.FlutterAd.FlutterAdError;
@@ -34,7 +31,6 @@ import io.flutter.plugins.googlemobileads.nativetemplates.FlutterNativeTemplateF
 import io.flutter.plugins.googlemobileads.nativetemplates.FlutterNativeTemplateStyle;
 import io.flutter.plugins.googlemobileads.nativetemplates.FlutterNativeTemplateTextStyle;
 import io.flutter.plugins.googlemobileads.nativetemplates.FlutterNativeTemplateType;
-
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.util.List;
@@ -354,24 +350,24 @@ class AdMessageCodec extends StandardMessageCodec {
         return rcb.build();
       case VALUE_NATIVE_TEMPLATE_STYLE:
         return new FlutterNativeTemplateStyle(
-          (FlutterNativeTemplateType) readValueOfType(buffer.get(), buffer),
-          (ColorDrawable) readValueOfType(buffer.get(), buffer),
-          (FlutterNativeTemplateTextStyle) readValueOfType(buffer.get(), buffer),
-          (FlutterNativeTemplateTextStyle) readValueOfType(buffer.get(), buffer),
-          (FlutterNativeTemplateTextStyle) readValueOfType(buffer.get(), buffer),
-          (FlutterNativeTemplateTextStyle) readValueOfType(buffer.get(), buffer));
+            (FlutterNativeTemplateType) readValueOfType(buffer.get(), buffer),
+            (ColorDrawable) readValueOfType(buffer.get(), buffer),
+            (FlutterNativeTemplateTextStyle) readValueOfType(buffer.get(), buffer),
+            (FlutterNativeTemplateTextStyle) readValueOfType(buffer.get(), buffer),
+            (FlutterNativeTemplateTextStyle) readValueOfType(buffer.get(), buffer),
+            (FlutterNativeTemplateTextStyle) readValueOfType(buffer.get(), buffer));
       case VALUE_NATIVE_TEMPLATE_TEXT_STYLE:
         return new FlutterNativeTemplateTextStyle(
-                (ColorDrawable) readValueOfType(buffer.get(), buffer),
-                (ColorDrawable) readValueOfType(buffer.get(), buffer),
-                (FlutterNativeTemplateFontStyle) readValueOfType(buffer.get(), buffer),
-                ((Double) readValueOfType(buffer.get(), buffer)).floatValue());
+            (ColorDrawable) readValueOfType(buffer.get(), buffer),
+            (ColorDrawable) readValueOfType(buffer.get(), buffer),
+            (FlutterNativeTemplateFontStyle) readValueOfType(buffer.get(), buffer),
+            ((Double) readValueOfType(buffer.get(), buffer)).floatValue());
       case VALUE_NATIVE_TEMPLATE_FONT_STYLE:
-        return FlutterNativeTemplateFontStyle
-                .fromIntValue((Integer) readValueOfType(buffer.get(), buffer));
+        return FlutterNativeTemplateFontStyle.fromIntValue(
+            (Integer) readValueOfType(buffer.get(), buffer));
       case VALUE_NATIVE_TEMPLATE_TYPE:
-        return FlutterNativeTemplateType
-                .fromIntValue((Integer) readValueOfType(buffer.get(), buffer));
+        return FlutterNativeTemplateType.fromIntValue(
+            (Integer) readValueOfType(buffer.get(), buffer));
       case VALUE_COLOR:
         final Integer alpha = (Integer) readValueOfType(buffer.get(), buffer);
         final Integer red = (Integer) readValueOfType(buffer.get(), buffer);

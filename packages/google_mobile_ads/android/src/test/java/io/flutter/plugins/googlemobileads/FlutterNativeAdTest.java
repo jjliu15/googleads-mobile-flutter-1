@@ -29,9 +29,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.app.Activity;
-
 import androidx.test.core.app.ApplicationProvider;
-
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdValue;
@@ -91,7 +89,7 @@ public class FlutterNativeAdTest {
             mockLoader,
             mockOptions,
             mockFlutterNativeAdOptions,
-                null);
+            null);
 
     final ResponseInfo responseInfo = mock(ResponseInfo.class);
     final NativeAd mockNativeAd = mock(NativeAd.class);
@@ -195,7 +193,7 @@ public class FlutterNativeAdTest {
             mockLoader,
             mockOptions,
             mockFlutterNativeAdOptions,
-              null);
+            null);
 
     final ResponseInfo responseInfo = mock(ResponseInfo.class);
     final NativeAd mockNativeAd = mock(NativeAd.class);
