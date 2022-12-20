@@ -1100,14 +1100,14 @@
 }
 
 - (instancetype _Nonnull)
-      initWithAdUnitId:(NSString *_Nonnull)adUnitId
-               request:(FLTAdRequest *_Nonnull)request
-       nativeAdFactory:(NSObject<FLTNativeAdFactory> *_Nonnull)nativeAdFactory
-         customOptions:(NSDictionary<NSString *, id> *_Nullable)customOptions
-    rootViewController:(UIViewController *_Nonnull)rootViewController
-                  adId:(NSNumber *_Nonnull)adId
-       nativeAdOptions:(FLTNativeAdOptions *_Nullable)nativeAdOptions
-   nativeTemplateStyle:(FLTNativeTemplateStyle *_Nullable)nativeTemplateStyle {
+       initWithAdUnitId:(NSString *_Nonnull)adUnitId
+                request:(FLTAdRequest *_Nonnull)request
+        nativeAdFactory:(NSObject<FLTNativeAdFactory> *_Nonnull)nativeAdFactory
+          customOptions:(NSDictionary<NSString *, id> *_Nullable)customOptions
+     rootViewController:(UIViewController *_Nonnull)rootViewController
+                   adId:(NSNumber *_Nonnull)adId
+        nativeAdOptions:(FLTNativeAdOptions *_Nullable)nativeAdOptions
+    nativeTemplateStyle:(FLTNativeTemplateStyle *_Nullable)nativeTemplateStyle {
   self = [super init];
   if (self) {
     self.adId = adId;

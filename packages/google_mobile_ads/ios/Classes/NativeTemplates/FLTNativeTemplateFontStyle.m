@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #import "FLTNativeTemplateFontStyle.h"
-
 
 @implementation FLTNativeTemplateFontStyleWrapper {
   int _intValue;
@@ -29,8 +27,8 @@
 }
 
 - (FLTNativeTemplateFontStyle)fontStyle {
-    return FLTNativeTemplateFontNormal;
-    // TODO
+  return FLTNativeTemplateFontNormal;
+  // TODO
 }
 
 @end

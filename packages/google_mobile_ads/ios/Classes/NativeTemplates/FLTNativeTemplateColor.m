@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #import "FLTNativeTemplateColor.h"
-
 
 @implementation FLTNativeTemplateColor {
   NSNumber *_alpha;
@@ -38,11 +36,10 @@
 }
 
 - (UIColor *)uiColor {
-
-  return [UIColor colorWithRed:_red.floatValue/255.f
-                         green:_green.floatValue/255.f
-                          blue:_blue.floatValue/255.f
-                         alpha:_alpha.floatValue/255.f];
+  return [UIColor colorWithRed:_red.floatValue / 255.f
+                         green:_green.floatValue / 255.f
+                          blue:_blue.floatValue / 255.f
+                         alpha:_alpha.floatValue / 255.f];
 }
 
 @end

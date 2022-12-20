@@ -16,7 +16,7 @@
 
 /** Maps int values to template layout types. */
 @interface FLTNativeTemplateType : NSObject
-  
+
 - (instancetype _Nonnull)initWithInt:(int)intValue;
 - (NSString *_Nonnull)xibName;
 @end

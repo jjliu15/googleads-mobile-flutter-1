@@ -24,13 +24,11 @@ typedef NS_ENUM(NSInteger, FLTNativeTemplateFontStyle) {
   FLTNativeTemplateFontMonospace
 };
 
-
 /**
  * Handles mapping argb to UIColor.
  */
 @interface FLTNativeTemplateFontStyleWrapper : NSObject
 
 - (instancetype _Nonnull)initWithInt:(int)intValue;
-- (FLTNativeTemplateFontStyle) fontStyle;
+- (FLTNativeTemplateFontStyle)fontStyle;
 @end
-

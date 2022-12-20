@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #import "FLTNativeTemplateType.h"
-
 
 @implementation FLTNativeTemplateType {
   int _intValue;
@@ -30,14 +28,13 @@
 
 - (NSString *)xibName {
   switch (_intValue) {
-    case 0:
-      return @"GADTSmallTemplateView";
-    case 1:
-      return @"GADTMediumTemplateView";
+  case 0:
+    return @"GADTSmallTemplateView";
+  case 1:
+    return @"GADTMediumTemplateView";
   }
   NSLog(@"Unknown template type value: %d", _intValue);
   return @"GADTMediumTemplateView";
 }
-
 
 @end

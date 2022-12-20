@@ -18,67 +18,80 @@
 GADTNativeTemplateStyleKey const GADTNativeTemplateStyleKeyCallToActionFont =
     @"call_to_action_font";
 
-GADTNativeTemplateStyleKey const GADTNativeTemplateStyleKeyCallToActionFontColor =
-    @"call_to_action_font_color";
+GADTNativeTemplateStyleKey const
+    GADTNativeTemplateStyleKeyCallToActionFontColor =
+        @"call_to_action_font_color";
 
-GADTNativeTemplateStyleKey const GADTNativeTemplateStyleKeyCallToActionBackgroundColor =
-    @"call_to_action_background_color";
+GADTNativeTemplateStyleKey const
+    GADTNativeTemplateStyleKeyCallToActionBackgroundColor =
+        @"call_to_action_background_color";
 
-GADTNativeTemplateStyleKey const GADTNativeTemplateStyleKeySecondaryFont = @"secondary_font";
+GADTNativeTemplateStyleKey const GADTNativeTemplateStyleKeySecondaryFont =
+    @"secondary_font";
 
 GADTNativeTemplateStyleKey const GADTNativeTemplateStyleKeySecondaryFontColor =
     @"secondary_font_color";
 
-GADTNativeTemplateStyleKey const GADTNativeTemplateStyleKeySecondaryBackgroundColor =
-    @"secondary_background_color";
+GADTNativeTemplateStyleKey const
+    GADTNativeTemplateStyleKeySecondaryBackgroundColor =
+        @"secondary_background_color";
 
-GADTNativeTemplateStyleKey const GADTNativeTemplateStyleKeyPrimaryFont = @"primary_font";
+GADTNativeTemplateStyleKey const GADTNativeTemplateStyleKeyPrimaryFont =
+    @"primary_font";
 
-GADTNativeTemplateStyleKey const GADTNativeTemplateStyleKeyPrimaryFontColor = @"primary_font_color";
+GADTNativeTemplateStyleKey const GADTNativeTemplateStyleKeyPrimaryFontColor =
+    @"primary_font_color";
 
-GADTNativeTemplateStyleKey const GADTNativeTemplateStyleKeyPrimaryBackgroundColor =
-    @"primary_background_color";
+GADTNativeTemplateStyleKey const
+    GADTNativeTemplateStyleKeyPrimaryBackgroundColor =
+        @"primary_background_color";
 
-GADTNativeTemplateStyleKey const GADTNativeTemplateStyleKeyTertiaryFont = @"tertiary_font";
+GADTNativeTemplateStyleKey const GADTNativeTemplateStyleKeyTertiaryFont =
+    @"tertiary_font";
 
 GADTNativeTemplateStyleKey const GADTNativeTemplateStyleKeyTertiaryFontColor =
     @"tertiary_font_color";
 
-GADTNativeTemplateStyleKey const GADTNativeTemplateStyleKeyTertiaryBackgroundColor =
-    @"tertiary_background_color";
+GADTNativeTemplateStyleKey const
+    GADTNativeTemplateStyleKeyTertiaryBackgroundColor =
+        @"tertiary_background_color";
 
 GADTNativeTemplateStyleKey const GADTNativeTemplateStyleKeyMainBackgroundColor =
     @"main_background_color";
 
-GADTNativeTemplateStyleKey const GADTNativeTemplateStyleKeyCornerRadius = @"corner_radius";
+GADTNativeTemplateStyleKey const GADTNativeTemplateStyleKeyCornerRadius =
+    @"corner_radius";
 
-static NSString* const GADTBlue = @"#5C84F0";
+static NSString *const GADTBlue = @"#5C84F0";
 
 @implementation GADTTemplateView {
-  NSDictionary<GADTNativeTemplateStyleKey, NSObject*>* _defaultStyles;
+  NSDictionary<GADTNativeTemplateStyleKey, NSObject *> *_defaultStyles;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
   if (self = [super initWithFrame:frame]) {
-    _rootView = [NSBundle.mainBundle loadNibNamed:NSStringFromClass([self class])
-                                            owner:self
-                                          options:nil]
-                    .firstObject;
+    _rootView =
+        [NSBundle.mainBundle loadNibNamed:NSStringFromClass([self class])
+                                    owner:self
+                                  options:nil]
+            .firstObject;
 
     [self addSubview:_rootView];
 
-    [self
-        addConstraints:[NSLayoutConstraint
-                           constraintsWithVisualFormat:@"H:|[_rootView]|"
-                                               options:0
-                                               metrics:nil
-                                                 views:NSDictionaryOfVariableBindings(_rootView)]];
-    [self
-        addConstraints:[NSLayoutConstraint
-                           constraintsWithVisualFormat:@"V:|[_rootView]|"
-                                               options:0
-                                               metrics:nil
-                                                 views:NSDictionaryOfVariableBindings(_rootView)]];
+    [self addConstraints:
+              [NSLayoutConstraint
+                  constraintsWithVisualFormat:@"H:|[_rootView]|"
+                                      options:0
+                                      metrics:nil
+                                        views:NSDictionaryOfVariableBindings(
+                                                  _rootView)]];
+    [self addConstraints:
+              [NSLayoutConstraint
+                  constraintsWithVisualFormat:@"V:|[_rootView]|"
+                                      options:0
+                                      metrics:nil
+                                        views:NSDictionaryOfVariableBindings(
+                                                  _rootView)]];
     [self applyStyles];
     [self styleAdBadge];
   }
@@ -89,27 +102,30 @@ static NSString* const GADTBlue = @"#5C84F0";
   return @"root";
 }
 
-/// Returns the style value for the provided key or the default style if no styles dictionary
-/// was set.
+/// Returns the style value for the provided key or the default style if no
+/// styles dictionary was set.
 - (id)styleForKey:(GADTNativeTemplateStyleKey)key {
   return _styles[key] ?: nil;
 }
 
-// Goes through all recognized style keys and updates the views accordingly, overwriting the
-// defaults.
+// Goes through all recognized style keys and updates the views accordingly,
+// overwriting the defaults.
 - (void)applyStyles {
-  self.layer.borderColor = [GADTTemplateView colorFromHexString:@"E0E0E0"].CGColor;
+  self.layer.borderColor =
+      [GADTTemplateView colorFromHexString:@"E0E0E0"].CGColor;
   self.layer.borderWidth = 1.0f;
   [self.mediaView sizeToFit];
   if ([self styleForKey:GADTNativeTemplateStyleKeyCornerRadius]) {
     float roundedCornerRadius =
-        ((NSNumber *)[self styleForKey:GADTNativeTemplateStyleKeyCornerRadius]).floatValue;
+        ((NSNumber *)[self styleForKey:GADTNativeTemplateStyleKeyCornerRadius])
+            .floatValue;
 
     // Rounded corners
     self.iconView.layer.cornerRadius = roundedCornerRadius;
     self.iconView.clipsToBounds = YES;
-    ((UIButton*)self.callToActionView).layer.cornerRadius = roundedCornerRadius;
-    ((UIButton*)self.callToActionView).clipsToBounds = YES;
+    ((UIButton *)self.callToActionView).layer.cornerRadius =
+        roundedCornerRadius;
+    ((UIButton *)self.callToActionView).clipsToBounds = YES;
   }
 
   // Fonts
@@ -135,49 +151,52 @@ static NSString* const GADTBlue = @"#5C84F0";
 
   // Font colors
   if ([self styleForKey:GADTNativeTemplateStyleKeyPrimaryFontColor])
-    ((UILabel *)self.headlineView).textColor =
-        (UIColor *)[self styleForKey:GADTNativeTemplateStyleKeyPrimaryFontColor];
+    ((UILabel *)self.headlineView).textColor = (UIColor *)[self
+        styleForKey:GADTNativeTemplateStyleKeyPrimaryFontColor];
 
   if ([self styleForKey:GADTNativeTemplateStyleKeySecondaryFontColor]) {
-    ((UILabel *)self.bodyView).textColor =
-        (UIColor *)[self styleForKey:GADTNativeTemplateStyleKeySecondaryFontColor];
+    ((UILabel *)self.bodyView).textColor = (UIColor *)[self
+        styleForKey:GADTNativeTemplateStyleKeySecondaryFontColor];
   }
 
   if ([self styleForKey:GADTNativeTemplateStyleKeyTertiaryFontColor]) {
-    ((UILabel *)self.advertiserView).textColor =
-        (UIColor *)[self styleForKey:GADTNativeTemplateStyleKeyTertiaryFontColor];
+    ((UILabel *)self.advertiserView).textColor = (UIColor *)[self
+        styleForKey:GADTNativeTemplateStyleKeyTertiaryFontColor];
   }
 
   if ([self styleForKey:GADTNativeTemplateStyleKeyCallToActionFontColor]) {
     [((UIButton *)self.callToActionView)
-        setTitleColor:(UIColor *)[self styleForKey:GADTNativeTemplateStyleKeyCallToActionFontColor]
+        setTitleColor:
+            (UIColor *)[self
+                styleForKey:GADTNativeTemplateStyleKeyCallToActionFontColor]
              forState:UIControlStateNormal];
   }
 
   // Background colors
   if ([self styleForKey:GADTNativeTemplateStyleKeyPrimaryBackgroundColor]) {
-    ((UILabel *)self.headlineView).backgroundColor =
-        (UIColor *)[self styleForKey:GADTNativeTemplateStyleKeyPrimaryBackgroundColor];
+    ((UILabel *)self.headlineView).backgroundColor = (UIColor *)[self
+        styleForKey:GADTNativeTemplateStyleKeyPrimaryBackgroundColor];
   }
 
   if ([self styleForKey:GADTNativeTemplateStyleKeySecondaryBackgroundColor]) {
-    ((UILabel *)self.bodyView).backgroundColor =
-        (UIColor *)[self styleForKey:GADTNativeTemplateStyleKeySecondaryBackgroundColor];
+    ((UILabel *)self.bodyView).backgroundColor = (UIColor *)[self
+        styleForKey:GADTNativeTemplateStyleKeySecondaryBackgroundColor];
   }
 
   if ([self styleForKey:GADTNativeTemplateStyleKeyTertiaryBackgroundColor]) {
-    ((UILabel *)self.advertiserView).backgroundColor =
-        (UIColor *)[self styleForKey:GADTNativeTemplateStyleKeyTertiaryBackgroundColor];
+    ((UILabel *)self.advertiserView).backgroundColor = (UIColor *)[self
+        styleForKey:GADTNativeTemplateStyleKeyTertiaryBackgroundColor];
   }
 
-  if ([self styleForKey:GADTNativeTemplateStyleKeyCallToActionBackgroundColor]) {
-    ((UIButton *)self.callToActionView).backgroundColor =
-        (UIColor *)[self styleForKey:GADTNativeTemplateStyleKeyCallToActionBackgroundColor];
+  if ([self
+          styleForKey:GADTNativeTemplateStyleKeyCallToActionBackgroundColor]) {
+    ((UIButton *)self.callToActionView).backgroundColor = (UIColor *)[self
+        styleForKey:GADTNativeTemplateStyleKeyCallToActionBackgroundColor];
   }
 
   if ([self styleForKey:GADTNativeTemplateStyleKeyMainBackgroundColor]) {
-    self.backgroundColor =
-        (UIColor *)[self styleForKey:GADTNativeTemplateStyleKeyMainBackgroundColor];
+    self.backgroundColor = (UIColor *)[self
+        styleForKey:GADTNativeTemplateStyleKeyMainBackgroundColor];
   }
 }
 - (void)styleAdBadge {
@@ -187,7 +206,8 @@ static NSString* const GADTBlue = @"#5C84F0";
   adBadge.layer.cornerRadius = 3.0;
 }
 
-- (void)setStyles:(NSDictionary<GADTNativeTemplateStyleKey, NSObject *> *)styles {
+- (void)setStyles:
+    (NSDictionary<GADTNativeTemplateStyleKey, NSObject *> *)styles {
   _styles = [styles copy];
   [self applyStyles];
 }
@@ -222,18 +242,18 @@ static NSString* const GADTBlue = @"#5C84F0";
   }
 
   // Either show the number of stars an app has, or show the body of the ad.
-  // If there is a starRating then starRatingView is shown and bodyView is hidden
-  // otherwise, starRatingView is hidden and bodyView is filled.
-  // Use the unicode characters for filled in or empty stars.
+  // If there is a starRating then starRatingView is shown and bodyView is
+  // hidden otherwise, starRatingView is hidden and bodyView is filled. Use the
+  // unicode characters for filled in or empty stars.
   if (nativeAd.starRating.floatValue > 0) {
-    NSMutableString* stars = [[NSMutableString alloc] initWithString:@""];
+    NSMutableString *stars = [[NSMutableString alloc] initWithString:@""];
     int count = 0;
     for (; count < nativeAd.starRating.intValue; count++) {
-      NSString* filledStar = [NSString stringWithUTF8String:"\u2605"];
+      NSString *filledStar = [NSString stringWithUTF8String:"\u2605"];
       [stars appendString:filledStar];
     }
     for (; count < 5; count++) {
-      NSString* emptyStar = [NSString stringWithUTF8String:"\u2606"];
+      NSString *emptyStar = [NSString stringWithUTF8String:"\u2606"];
       [stars appendString:emptyStar];
     }
     ((UILabel *)self.starRatingView).text = stars;
@@ -250,44 +270,49 @@ static NSString* const GADTBlue = @"#5C84F0";
 }
 
 - (void)addHorizontalConstraintsToSuperviewWidth {
-  // Add an autolayout constraint to make sure our template view stretches to fill the
-  // width of its parent.
+  // Add an autolayout constraint to make sure our template view stretches to
+  // fill the width of its parent.
   if (self.superview) {
-    UIView* child = self;
+    UIView *child = self;
     [self.superview
-        addConstraints:[NSLayoutConstraint
-                           constraintsWithVisualFormat:@"H:|[child]|"
-                                               options:0
-                                               metrics:nil
-                                                 views:NSDictionaryOfVariableBindings(child)]];
+        addConstraints:
+            [NSLayoutConstraint
+                constraintsWithVisualFormat:@"H:|[child]|"
+                                    options:0
+                                    metrics:nil
+                                      views:NSDictionaryOfVariableBindings(
+                                                child)]];
   }
 }
 
 - (void)addVerticalCenterConstraintToSuperview {
   if (self.superview) {
-    UIView* child = self;
-    [self.superview addConstraint:[NSLayoutConstraint constraintWithItem:self.superview
-                                                               attribute:NSLayoutAttributeCenterY
-                                                               relatedBy:NSLayoutRelationEqual
-                                                                  toItem:child
-                                                               attribute:NSLayoutAttributeCenterY
-                                                              multiplier:1
-                                                                constant:0]];
+    UIView *child = self;
+    [self.superview
+        addConstraint:[NSLayoutConstraint
+                          constraintWithItem:self.superview
+                                   attribute:NSLayoutAttributeCenterY
+                                   relatedBy:NSLayoutRelationEqual
+                                      toItem:child
+                                   attribute:NSLayoutAttributeCenterY
+                                  multiplier:1
+                                    constant:0]];
   }
 }
 
 /// Creates an opaque UIColor object from a byte-value color definition.
-+ (UIColor*)colorFromHexString:(NSString*)hexString {
++ (UIColor *)colorFromHexString:(NSString *)hexString {
   if (hexString == nil) {
     return nil;
   }
-  NSRange range = [hexString rangeOfString:@"^#[0-9a-fA-F]{6}$" options:NSRegularExpressionSearch];
+  NSRange range = [hexString rangeOfString:@"^#[0-9a-fA-F]{6}$"
+                                   options:NSRegularExpressionSearch];
   if (range.location == NSNotFound) {
     return nil;
   }
   unsigned rgbValue = 0;
-  NSScanner* scanner = [NSScanner scannerWithString:hexString];
-  [scanner setScanLocation:1];  // Bypass '#' character.
+  NSScanner *scanner = [NSScanner scannerWithString:hexString];
+  [scanner setScanLocation:1]; // Bypass '#' character.
   [scanner scanHexInt:&rgbValue];
 
   return [UIColor colorWithRed:((rgbValue & 0xff0000) >> 16) / 255.0f

@@ -12,21 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #import "FLTNativeTemplateStyle.h"
+#import "FLTAdUtil.h"
 #import "GADTSmallTemplateView.h"
 #import "GADTTemplateView.h"
-#import "FLTAdUtil.h"
 
 @implementation FLTNativeTemplateStyle
 
-- (instancetype _Nonnull)initWithTemplateType:(FLTNativeTemplateType *_Nullable)templateType
-                          mainbackgroundColor:(FLTNativeTemplateColor *_Nullable)mainbackgroundColor
-                            callToActionStyle:(FLTNativeTemplateTextStyle *_Nullable)callToActionStyle
-                             primaryTextStyle:(FLTNativeTemplateTextStyle *_Nullable)primaryTextStyle
-                           secondaryTextStyle:(FLTNativeTemplateTextStyle *_Nullable)secondaryTextStyle
-                            tertiaryTextStyle:(FLTNativeTemplateTextStyle *_Nullable)tertiaryTextStyle
-                                 cornerRadius:(NSNumber *_Nullable)cornerRadius {
+- (instancetype _Nonnull)
+    initWithTemplateType:(FLTNativeTemplateType *_Nullable)templateType
+     mainbackgroundColor:(FLTNativeTemplateColor *_Nullable)mainbackgroundColor
+       callToActionStyle:
+           (FLTNativeTemplateTextStyle *_Nullable)callToActionStyle
+        primaryTextStyle:(FLTNativeTemplateTextStyle *_Nullable)primaryTextStyle
+      secondaryTextStyle:
+          (FLTNativeTemplateTextStyle *_Nullable)secondaryTextStyle
+       tertiaryTextStyle:
+           (FLTNativeTemplateTextStyle *_Nullable)tertiaryTextStyle
+            cornerRadius:(NSNumber *_Nullable)cornerRadius {
   self = [super init];
   if (self) {
     _templateType = templateType;
@@ -40,73 +43,87 @@
   return self;
 }
 
-- (FLTNativeTemplateViewWrapper *_Nonnull) getDisplayedView:(GADNativeAd *_Nonnull)gadNativeAd {
-
+- (FLTNativeTemplateViewWrapper *_Nonnull)getDisplayedView:
+    (GADNativeAd *_Nonnull)gadNativeAd {
   GADTTemplateView *templateView =
-    [[NSBundle mainBundle] loadNibNamed:_templateType.xibName owner:nil options:nil]
-        .firstObject;
+      [[NSBundle mainBundle] loadNibNamed:_templateType.xibName
+                                    owner:nil
+                                  options:nil]
+          .firstObject;
   NSMutableDictionary *styles = [[NSMutableDictionary alloc] init];
   if ([FLTAdUtil isNotNull:_mainBackgroundColor]) {
-    styles[GADTNativeTemplateStyleKeyMainBackgroundColor] = _mainBackgroundColor.uiColor;
+    styles[GADTNativeTemplateStyleKeyMainBackgroundColor] =
+        _mainBackgroundColor.uiColor;
   }
   if ([FLTAdUtil isNotNull:_cornerRadius]) {
     styles[GADTNativeTemplateStyleKeyCornerRadius] = _cornerRadius;
   }
   if ([FLTAdUtil isNotNull:_callToActionStyle]) {
     if ([FLTAdUtil isNotNull:_callToActionStyle.backgroundColor]) {
-      styles[GADTNativeTemplateStyleKeyCallToActionBackgroundColor] = _callToActionStyle.backgroundColor.uiColor;
+      styles[GADTNativeTemplateStyleKeyCallToActionBackgroundColor] =
+          _callToActionStyle.backgroundColor.uiColor;
     }
     if ([FLTAdUtil isNotNull:_callToActionStyle.uiFont]) {
-      styles[GADTNativeTemplateStyleKeyCallToActionFont] = _callToActionStyle.uiFont;
+      styles[GADTNativeTemplateStyleKeyCallToActionFont] =
+          _callToActionStyle.uiFont;
     }
     if ([FLTAdUtil isNotNull:_callToActionStyle.textColor]) {
-      styles[GADTNativeTemplateStyleKeyCallToActionFontColor] = _callToActionStyle.textColor.uiColor;
+      styles[GADTNativeTemplateStyleKeyCallToActionFontColor] =
+          _callToActionStyle.textColor.uiColor;
     }
   }
   if ([FLTAdUtil isNotNull:_primaryTextStyle]) {
     if ([FLTAdUtil isNotNull:_primaryTextStyle.backgroundColor]) {
-      styles[GADTNativeTemplateStyleKeyPrimaryBackgroundColor] = _primaryTextStyle.backgroundColor.uiColor;
+      styles[GADTNativeTemplateStyleKeyPrimaryBackgroundColor] =
+          _primaryTextStyle.backgroundColor.uiColor;
     }
     if ([FLTAdUtil isNotNull:_primaryTextStyle.uiFont]) {
       styles[GADTNativeTemplateStyleKeyPrimaryFont] = _primaryTextStyle.uiFont;
     }
     if ([FLTAdUtil isNotNull:_primaryTextStyle.textColor]) {
-      styles[GADTNativeTemplateStyleKeyPrimaryFontColor] = _primaryTextStyle.textColor.uiColor;
+      styles[GADTNativeTemplateStyleKeyPrimaryFontColor] =
+          _primaryTextStyle.textColor.uiColor;
     }
   }
   if ([FLTAdUtil isNotNull:_secondaryTextStyle]) {
     if ([FLTAdUtil isNotNull:_secondaryTextStyle.backgroundColor]) {
-      styles[GADTNativeTemplateStyleKeySecondaryBackgroundColor] = _secondaryTextStyle.backgroundColor.uiColor;
+      styles[GADTNativeTemplateStyleKeySecondaryBackgroundColor] =
+          _secondaryTextStyle.backgroundColor.uiColor;
     }
     if ([FLTAdUtil isNotNull:_secondaryTextStyle.uiFont]) {
-      styles[GADTNativeTemplateStyleKeySecondaryFont] = _secondaryTextStyle.uiFont;
+      styles[GADTNativeTemplateStyleKeySecondaryFont] =
+          _secondaryTextStyle.uiFont;
     }
     if ([FLTAdUtil isNotNull:_secondaryTextStyle.textColor]) {
-      styles[GADTNativeTemplateStyleKeySecondaryFontColor] = _secondaryTextStyle.textColor.uiColor;
+      styles[GADTNativeTemplateStyleKeySecondaryFontColor] =
+          _secondaryTextStyle.textColor.uiColor;
     }
   }
 
   if ([FLTAdUtil isNotNull:_tertiaryTextStyle]) {
     if ([FLTAdUtil isNotNull:_tertiaryTextStyle.backgroundColor]) {
-      styles[GADTNativeTemplateStyleKeyTertiaryBackgroundColor] = _tertiaryTextStyle.backgroundColor.uiColor;
+      styles[GADTNativeTemplateStyleKeyTertiaryBackgroundColor] =
+          _tertiaryTextStyle.backgroundColor.uiColor;
     }
     if ([FLTAdUtil isNotNull:_tertiaryTextStyle.uiFont]) {
-      styles[GADTNativeTemplateStyleKeyTertiaryFont] = _tertiaryTextStyle.uiFont;
+      styles[GADTNativeTemplateStyleKeyTertiaryFont] =
+          _tertiaryTextStyle.uiFont;
     }
     if ([FLTAdUtil isNotNull:_tertiaryTextStyle.textColor]) {
-      styles[GADTNativeTemplateStyleKeyTertiaryFontColor] = _tertiaryTextStyle.textColor.uiColor;
+      styles[GADTNativeTemplateStyleKeyTertiaryFontColor] =
+          _tertiaryTextStyle.textColor.uiColor;
     }
   }
   templateView.styles = styles;
   templateView.nativeAd = gadNativeAd;
-  
-  FLTNativeTemplateViewWrapper *wrapper = [[FLTNativeTemplateViewWrapper alloc] initWithFrame:CGRectZero];
+
+  FLTNativeTemplateViewWrapper *wrapper =
+      [[FLTNativeTemplateViewWrapper alloc] initWithFrame:CGRectZero];
   wrapper.templateView = templateView;
   return wrapper;
 }
 
 @end
-
 
 @implementation FLTNativeTemplateViewWrapper
 

@@ -17,10 +17,9 @@
 #import "FLTMediationNetworkExtrasProvider.h"
 #import "FLTMobileAds_Internal.h"
 #import "FLTNativeTemplateStyle.h"
+#import "GADTTemplateView.h"
 #import <GoogleMobileAds/GoogleMobileAds.h>
 #import <UIKit/UIKit.h>
-#import "GADTTemplateView.h"
-
 
 @class FLTAdInstanceManager;
 @protocol FLTNativeAdFactory;
@@ -297,14 +296,14 @@
     : FLTBaseAd <FLTAd, FlutterPlatformView, GADNativeAdDelegate,
                  GADNativeAdLoaderDelegate>
 - (instancetype _Nonnull)
-      initWithAdUnitId:(NSString *_Nonnull)adUnitId
-               request:(FLTAdRequest *_Nonnull)request
-       nativeAdFactory:(NSObject<FLTNativeAdFactory> *_Nonnull)nativeAdFactory
-         customOptions:(NSDictionary<NSString *, id> *_Nullable)customOptions
-    rootViewController:(UIViewController *_Nonnull)rootViewController
-                  adId:(NSNumber *_Nonnull)adId
-       nativeAdOptions:(FLTNativeAdOptions *_Nullable)nativeAdOptions
-   nativeTemplateStyle:(FLTNativeTemplateStyle *_Nullable)nativeTemplateStyle;
+       initWithAdUnitId:(NSString *_Nonnull)adUnitId
+                request:(FLTAdRequest *_Nonnull)request
+        nativeAdFactory:(NSObject<FLTNativeAdFactory> *_Nonnull)nativeAdFactory
+          customOptions:(NSDictionary<NSString *, id> *_Nullable)customOptions
+     rootViewController:(UIViewController *_Nonnull)rootViewController
+                   adId:(NSNumber *_Nonnull)adId
+        nativeAdOptions:(FLTNativeAdOptions *_Nullable)nativeAdOptions
+    nativeTemplateStyle:(FLTNativeTemplateStyle *_Nullable)nativeTemplateStyle;
 - (GADAdLoader *_Nonnull)adLoader;
 @end
 
@@ -323,4 +322,3 @@
                              precision:(NSInteger)precision
                           currencyCode:(NSString *_Nonnull)currencyCode;
 @end
-

@@ -12,32 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
+#import "FLTNativeTemplateColor.h"
 #import "FLTNativeTemplateTextStyle.h"
 #import "FLTNativeTemplateType.h"
-#import "FLTNativeTemplateColor.h"
 #import "GADTTemplateView.h"
+#import <Foundation/Foundation.h>
 #import <GoogleMobileAds/GADNativeAd.h>
-
+#import <UIKit/UIKit.h>
 
 /** Wraps a GADTTemplateView for being displayed as a platform view. */
 @interface FLTNativeTemplateViewWrapper : UIView
 
 /** The GADTTemplateView that is being wrapped.  */
-@property GADTTemplateView * _Nullable templateView;
+@property GADTTemplateView *_Nullable templateView;
 @end
-
 
 @interface FLTNativeTemplateStyle : NSObject
 
-- (instancetype _Nonnull)initWithTemplateType:(FLTNativeTemplateType *_Nullable)templateType
-                          mainbackgroundColor:(FLTNativeTemplateColor *_Nullable)mainbackgroundColor
-                            callToActionStyle:(FLTNativeTemplateTextStyle *_Nullable)callToActionStyle
-                             primaryTextStyle:(FLTNativeTemplateTextStyle *_Nullable)primaryTextStyle
-                           secondaryTextStyle:(FLTNativeTemplateTextStyle *_Nullable)secondaryTextStyle
-                            tertiaryTextStyle:(FLTNativeTemplateTextStyle *_Nullable)tertiaryTextStyle
-                                 cornerRadius:(NSNumber *_Nullable)cornerRadius ;
+- (instancetype _Nonnull)
+    initWithTemplateType:(FLTNativeTemplateType *_Nullable)templateType
+     mainbackgroundColor:(FLTNativeTemplateColor *_Nullable)mainbackgroundColor
+       callToActionStyle:
+           (FLTNativeTemplateTextStyle *_Nullable)callToActionStyle
+        primaryTextStyle:(FLTNativeTemplateTextStyle *_Nullable)primaryTextStyle
+      secondaryTextStyle:
+          (FLTNativeTemplateTextStyle *_Nullable)secondaryTextStyle
+       tertiaryTextStyle:
+           (FLTNativeTemplateTextStyle *_Nullable)tertiaryTextStyle
+            cornerRadius:(NSNumber *_Nullable)cornerRadius;
 @property(readonly) FLTNativeTemplateType *_Nullable templateType;
 @property(readonly) FLTNativeTemplateColor *_Nullable mainBackgroundColor;
 @property(readonly) FLTNativeTemplateTextStyle *_Nullable callToActionStyle;
@@ -46,8 +48,8 @@
 @property(readonly) FLTNativeTemplateTextStyle *_Nullable tertiaryTextStyle;
 @property(readonly) NSNumber *_Nullable cornerRadius;
 
-
 /** The actual view to be displayed. */
-- (FLTNativeTemplateViewWrapper *_Nonnull) getDisplayedView:(GADNativeAd *_Nonnull)gadNativeAd;
+- (FLTNativeTemplateViewWrapper *_Nonnull)getDisplayedView:
+    (GADNativeAd *_Nonnull)gadNativeAd;
 
 @end

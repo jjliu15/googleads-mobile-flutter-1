@@ -16,8 +16,8 @@
 
 #import "GADTTemplateView.h"
 
-/// A template for medium sized views. Renders a roughly square view with a call to action on the
-/// bottom and a horizontal image in the middle.
+/// A template for medium sized views. Renders a roughly square view with a call
+/// to action on the bottom and a horizontal image in the middle.
 @interface GADTMediumTemplateView : GADTTemplateView
 
 @end

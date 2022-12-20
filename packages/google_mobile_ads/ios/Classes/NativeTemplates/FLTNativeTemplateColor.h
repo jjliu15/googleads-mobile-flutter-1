@@ -22,8 +22,8 @@
 
 - (instancetype _Nonnull)initWithAlpha:(NSNumber *_Nonnull)alpha
                                    red:(NSNumber *_Nonnull)red
-                                   green:(NSNumber *_Nonnull)green
-                                   blue:(NSNumber *_Nonnull)blue;
+                                 green:(NSNumber *_Nonnull)green
+                                  blue:(NSNumber *_Nonnull)blue;
 - (UIColor *_Nonnull)uiColor;
 
 @end
