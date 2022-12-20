@@ -29,6 +29,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import android.app.Activity;
+
+import androidx.test.core.app.ApplicationProvider;
+
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdValue;
@@ -79,6 +82,7 @@ public class FlutterNativeAdTest {
     doReturn(mockNativeAdOptions).when(mockFlutterNativeAdOptions).asNativeAdOptions();
     final FlutterNativeAd nativeAd =
         new FlutterNativeAd(
+            ApplicationProvider.getApplicationContext(),
             1,
             testManager,
             "testId",
@@ -86,7 +90,8 @@ public class FlutterNativeAdTest {
             mockFlutterRequest,
             mockLoader,
             mockOptions,
-            mockFlutterNativeAdOptions);
+            mockFlutterNativeAdOptions,
+                null);
 
     final ResponseInfo responseInfo = mock(ResponseInfo.class);
     final NativeAd mockNativeAd = mock(NativeAd.class);
@@ -181,6 +186,7 @@ public class FlutterNativeAdTest {
     doReturn(mockNativeAdOptions).when(mockFlutterNativeAdOptions).asNativeAdOptions();
     final FlutterNativeAd nativeAd =
         new FlutterNativeAd(
+            ApplicationProvider.getApplicationContext(),
             1,
             testManager,
             "testId",
@@ -188,7 +194,8 @@ public class FlutterNativeAdTest {
             mockFlutterRequest,
             mockLoader,
             mockOptions,
-            mockFlutterNativeAdOptions);
+            mockFlutterNativeAdOptions,
+              null);
 
     final ResponseInfo responseInfo = mock(ResponseInfo.class);
     final NativeAd mockNativeAd = mock(NativeAd.class);
@@ -257,7 +264,7 @@ public class FlutterNativeAdTest {
 
   @Test(expected = IllegalStateException.class)
   public void nativeAdBuilderNullManager() {
-    new FlutterNativeAd.Builder()
+    new FlutterNativeAd.Builder(ApplicationProvider.getApplicationContext())
         .setManager(null)
         .setAdUnitId("testId")
         .setAdFactory(mock(GoogleMobileAdsPlugin.NativeAdFactory.class))
@@ -267,7 +274,7 @@ public class FlutterNativeAdTest {
 
   @Test(expected = IllegalStateException.class)
   public void nativeAdBuilderNullAdUnitId() {
-    new FlutterNativeAd.Builder()
+    new FlutterNativeAd.Builder(ApplicationProvider.getApplicationContext())
         .setManager(testManager)
         .setAdUnitId(null)
         .setAdFactory(mock(GoogleMobileAdsPlugin.NativeAdFactory.class))
@@ -277,7 +284,7 @@ public class FlutterNativeAdTest {
 
   @Test(expected = IllegalStateException.class)
   public void nativeAdBuilderNullAdFactory() {
-    new FlutterNativeAd.Builder()
+    new FlutterNativeAd.Builder(ApplicationProvider.getApplicationContext())
         .setManager(testManager)
         .setAdUnitId("testId")
         .setAdFactory(null)
@@ -287,7 +294,7 @@ public class FlutterNativeAdTest {
 
   @Test(expected = IllegalStateException.class)
   public void nativeAdBuilderNullRequest() {
-    new FlutterNativeAd.Builder()
+    new FlutterNativeAd.Builder(ApplicationProvider.getApplicationContext())
         .setManager(testManager)
         .setAdUnitId("testId")
         .setAdFactory(mock(GoogleMobileAdsPlugin.NativeAdFactory.class))
@@ -296,7 +303,7 @@ public class FlutterNativeAdTest {
 
   public void paidEvent() {
     FlutterNativeAd nativeAd =
-        new FlutterNativeAd.Builder()
+        new FlutterNativeAd.Builder(ApplicationProvider.getApplicationContext())
             .setManager(testManager)
             .setAdUnitId("adUnitId")
             .setRequest(request)
