@@ -20,8 +20,6 @@
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		9E1BEA7429148DD000315C59 /* FLTAdUtilTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E1BEA7329148DD000315C59 /* FLTAdUtilTest.m */; };
 		9E4163BB26CCE99400220C78 /* FLTAppOpenAdTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E4163BA26CCE99300220C78 /* FLTAppOpenAdTest.m */; };
-		9E45C980294D42BD00BC143D /* GADTSmallTemplateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EB84A26294A9AF300F2A80D /* GADTSmallTemplateView.xib */; };
-		9E45C981294D42BD00BC143D /* GADTMediumTemplateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9EB84A25294A9AD100F2A80D /* GADTMediumTemplateView.xib */; };
 		9E5A534926AA235D00B9438D /* FLTAdUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E5A534826AA235D00B9438D /* FLTAdUtil.m */; };
 		9E60902C27A9E7BE003D5BAB /* FLTRewardedInterstitialAdTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E60902B27A9E7BE003D5BAB /* FLTRewardedInterstitialAdTest.m */; };
 		9E79684A271FF40900E06158 /* FLTAdRequestTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 9E796848271FF40900E06158 /* FLTAdRequestTest.m */; };
@@ -415,6 +413,7 @@
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				9B1D271C636A5312CBEA6ED3 /* [CP] Embed Pods Frameworks */,
+				49DB53F11513926D17758C29 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -476,8 +475,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9E45C980294D42BD00BC143D /* GADTSmallTemplateView.xib in Resources */,
-				9E45C981294D42BD00BC143D /* GADTMediumTemplateView.xib in Resources */,
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				8FC897F52411A9F100415930 /* NativeAdView.xib in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
@@ -520,6 +517,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed\n/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" thin\n";
+		};
+		49DB53F11513926D17758C29 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/google_mobile_ads/google_mobile_ads.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/google_mobile_ads.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		89AD8E00A7365C448495871F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
