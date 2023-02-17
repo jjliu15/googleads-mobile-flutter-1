@@ -20,6 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'anchored_adaptive_example.dart';
+import 'auto_sizing_ad_widget_example.dart';
 import 'fluid_example.dart';
 import 'inline_adaptive_example.dart';
 import 'native_template_example.dart';
@@ -55,6 +56,7 @@ class _MyAppState extends State<MyApp> {
   static const inlineAdaptiveButtonText = 'Inline adaptive';
   static const anchoredAdaptiveButtonText = 'Anchored adaptive';
   static const nativeTemplateButtonText = 'Native template';
+  static const autoSizingButtonText = 'Auto sizing ad widget';
 
   InterstitialAd? _interstitialAd;
   int _numInterstitialLoadAttempts = 0;
@@ -279,6 +281,13 @@ class _MyAppState extends State<MyApp> {
                             builder: (context) => NativeTemplateExample()),
                       );
                       break;
+                    case autoSizingButtonText:
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AutoSizingAdWidgetExample()),
+                      );
+                      break;
                     default:
                       throw AssertionError('unexpected button: $result');
                   }
@@ -311,6 +320,10 @@ class _MyAppState extends State<MyApp> {
                   PopupMenuItem<String>(
                     value: nativeTemplateButtonText,
                     child: Text(nativeTemplateButtonText),
+                  ),
+                  PopupMenuItem<String>(
+                    value: autoSizingButtonText,
+                    child: Text(autoSizingButtonText),
                   ),
                 ],
               ),
