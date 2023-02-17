@@ -14,7 +14,12 @@
 
 package io.flutter.plugins.googlemobileads;
 
+import android.app.Activity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
+import android.widget.ScrollView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import io.flutter.plugin.platform.PlatformView;
@@ -36,5 +41,87 @@ class FlutterPlatformView implements PlatformView {
   @Override
   public void dispose() {
     this.view = null;
+  }
+}
+
+class AutoSizingPlatformView implements PlatformView {
+
+  /** The underlying ad view. */
+  private FlutterAdWithPlatformView flutterAdWithPlatformView;
+  private View containerView;
+
+  private AdInstanceManager manager;
+  @Nullable
+  private Integer width;
+  @Nullable
+  private Integer height;
+
+  AutoSizingPlatformView(
+          FlutterAdWithPlatformView flutterAdWithPlatformView,
+          AdInstanceManager manager) {
+    this.flutterAdWithPlatformView = flutterAdWithPlatformView;
+    this.manager = manager;
+    View view = flutterAdWithPlatformView.getView();
+    int adId = flutterAdWithPlatformView.adId;
+    if (view == null) {
+      return;
+    }
+
+    Activity activity = manager.getActivity();
+    if (activity == null) {
+      // TODO - log warning
+      return;
+    }
+
+    // This is a wierd hack that uses a nested scroll view inside a horizontal scroll view, to allow
+    // the ad view to size to its intrinsic content size.
+    // Flutter automatically sets the frame of the top level platform view to match the initial
+    // size given by Flutter. If the ad view is the top level platform view then it does not
+    // go to its natural content size, even if we set its LayoutParams to wrap_content.
+    HorizontalScrollView horizontalScrollView = new HorizontalScrollView(activity);
+
+    ScrollView scrollView = new ScrollView(activity);
+    scrollView.setClipChildren(false);
+    scrollView.setVerticalScrollBarEnabled(false);
+    scrollView.setHorizontalScrollBarEnabled(false);
+    scrollView.addView(view);
+    // TODO - do not create a new view each time
+    // TODO - check what's going on if the ad refreshes to a different ad size.
+    view.addOnLayoutChangeListener(
+      new View.OnLayoutChangeListener() {
+        @Override
+        public void onLayoutChange(
+                View v,
+                int left,
+                int top,
+                int right,
+                int bottom,
+                int oldLeft,
+                int oldTop,
+                int oldRight,
+                int oldBottom) {
+          // Forward the new height to its container.
+          int newHeight = v.getMeasuredHeight();
+          int newWidth = v.getMeasuredWidth();
+          if (width == null || height == null || newHeight != height || newWidth != width) {
+            manager.onPlatformViewSizeChanged(adId, newWidth, newHeight);
+          }
+          width = newWidth;
+          height = newHeight;
+        }
+      });
+    horizontalScrollView.addView(scrollView);
+    this.containerView = horizontalScrollView;
+  }
+
+  @Override
+  public View getView() {
+    return containerView;
+  }
+
+  @Override
+  public void dispose() {
+    this.flutterAdWithPlatformView = null;
+    this.manager = null;
   }
 }

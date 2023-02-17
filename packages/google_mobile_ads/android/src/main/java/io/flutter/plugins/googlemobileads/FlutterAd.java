@@ -14,6 +14,8 @@
 
 package io.flutter.plugins.googlemobileads;
 
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.gms.ads.AdError;
@@ -374,15 +376,27 @@ abstract class FlutterAd {
   /**
    * Gets the PlatformView for the ad. Default behavior is to return null. Should be overridden by
    * ads with platform views, such as banner and native ads.
+   * TODO - remove this from FlutterAd
    */
   @Nullable
   PlatformView getPlatformView() {
     return null;
-  };
+  }
 
   /**
    * Invoked when dispose() is called on the corresponding Flutter ad object. This perform any
    * necessary cleanup.
    */
   abstract void dispose();
+}
+
+/** Class representing a Flutter ad that has a platform view. Banners and native ads. */
+abstract class FlutterAdWithPlatformView extends FlutterAd {
+
+  FlutterAdWithPlatformView(int adId) {
+    super(adId);
+  }
+
+  @Nullable
+  abstract View getView();
 }

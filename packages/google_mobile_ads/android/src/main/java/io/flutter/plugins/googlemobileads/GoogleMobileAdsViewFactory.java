@@ -25,6 +25,7 @@ import io.flutter.plugin.common.StandardMessageCodec;
 import io.flutter.plugin.platform.PlatformView;
 import io.flutter.plugin.platform.PlatformViewFactory;
 import java.util.Locale;
+import java.util.Map;
 
 /** Displays loaded FlutterAds for an AdInstanceManager */
 final class GoogleMobileAdsViewFactory extends PlatformViewFactory {
@@ -56,12 +57,39 @@ final class GoogleMobileAdsViewFactory extends PlatformViewFactory {
 
   @Override
   public PlatformView create(Context context, int viewId, Object args) {
-    final Integer adId = (Integer) args;
-    FlutterAd ad = manager.adForId(adId);
-    if (ad == null || ad.getPlatformView() == null) {
-      return getErrorView(context, adId);
+    // TODO - clean this up
+    // TODO - make the viewId the adId, and args just a stringA
+    if (args instanceof Integer) {
+      Integer adId = (Integer) args;
+      FlutterAd ad = manager.adForId(adId);
+      if (ad == null || ad.getPlatformView() == null) {
+        return getErrorView(context, adId);
+      }
+      return ad.getPlatformView();
+    } else if (args instanceof Map) {
+      // TODO - handle this cleanly
+      Map<String, Object> map = (Map<String, Object>) args;
+      Integer adId = (Integer) map.get("adId");
+      FlutterAd ad = manager.adForId(adId);
+      if (ad == null || ad.getPlatformView() == null) {
+        return getErrorView(context, adId);
+      }
+      String type = (String) map.get("type");
+      switch (type) {
+        case "AdWidget":
+          // TODO - migrate normal AdWidget to pass a map
+          break;
+        case "AutoSizingAdWidget":
+          // TODO - add type checks
+          FlutterAdWithPlatformView flutterAdWithPlatformView = (FlutterAdWithPlatformView) ad;
+          return new AutoSizingPlatformView(flutterAdWithPlatformView, manager);
+        default:
+          // TODO - add error message
+          return getErrorView(context, adId);
+      }
     }
-    return ad.getPlatformView();
+    // TODO - log error
+    return getErrorView(context, viewId);
   }
 
   /**

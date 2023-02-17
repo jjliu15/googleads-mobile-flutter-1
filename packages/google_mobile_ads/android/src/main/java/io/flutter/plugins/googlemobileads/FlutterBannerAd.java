@@ -14,6 +14,10 @@
 
 package io.flutter.plugins.googlemobileads;
 
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.gms.ads.AdView;
@@ -21,7 +25,7 @@ import io.flutter.plugin.platform.PlatformView;
 import io.flutter.util.Preconditions;
 
 /** A wrapper for {@link AdView}. */
-class FlutterBannerAd extends FlutterAd implements FlutterAdLoadedListener {
+class FlutterBannerAd extends FlutterAdWithPlatformView implements FlutterAdLoadedListener {
 
   @NonNull private final AdInstanceManager manager;
   @NonNull private final String adUnitId;
@@ -29,6 +33,8 @@ class FlutterBannerAd extends FlutterAd implements FlutterAdLoadedListener {
   @NonNull private final FlutterAdRequest request;
   @NonNull private final BannerAdCreator bannerAdCreator;
   @Nullable private AdView adView;
+  @Nullable private Integer height;
+  @Nullable private Integer width;
 
   /** Constructs the FlutterBannerAd. */
   public FlutterBannerAd(
@@ -60,6 +66,9 @@ class FlutterBannerAd extends FlutterAd implements FlutterAdLoadedListener {
   @Override
   void load() {
     adView = bannerAdCreator.createAdView();
+    RelativeLayout.LayoutParams params =  new RelativeLayout
+            .LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+    adView.setLayoutParams(params);
     adView.setAdUnitId(adUnitId);
     adView.setAdSize(size.getAdSize());
     adView.setOnPaidEventListener(new FlutterPaidEventListener(manager, this));
@@ -74,6 +83,12 @@ class FlutterBannerAd extends FlutterAd implements FlutterAdLoadedListener {
       return null;
     }
     return new FlutterPlatformView(adView);
+  }
+
+  @Nullable
+  @Override
+  public View getView() {
+    return adView;
   }
 
   @Override
