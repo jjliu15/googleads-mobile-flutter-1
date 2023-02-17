@@ -38,6 +38,9 @@ AdInstanceManager instanceManager = AdInstanceManager(
   'plugins.flutter.io/google_mobile_ads',
 );
 
+typedef PlatformViewSizeChangeListener = void Function(
+    double width, double height);
+
 /// Maintains access to loaded [Ad] instances and handles sending/receiving
 /// messages to platform code.
 class AdInstanceManager {
@@ -63,6 +66,8 @@ class AdInstanceManager {
 
   int _nextAdId = 0;
   final _BiMap<int, Ad> _loadedAds = _BiMap<int, Ad>();
+  final Map<int, PlatformViewSizeChangeListener> _platformViewSizeChangeListenerMap
+    = <int, PlatformViewSizeChangeListener>{};
 
   /// Invokes load and dispose calls.
   final MethodChannel channel;
@@ -149,6 +154,9 @@ class AdInstanceManager {
       case 'onFluidAdHeightChanged':
         _invokeFluidAdHeightChanged(ad, arguments);
         break;
+      case 'onBannerAdDimensionsChanged':
+        _invokePlatformViewSizeChangeListener(ad, arguments);
+        break;
       default:
         debugPrint('invalid ad event name: $eventName');
     }
@@ -197,6 +205,9 @@ class AdInstanceManager {
       case 'onAdClicked':
         _invokeOnAdClicked(ad, eventName);
         break;
+      case 'onBannerAdDimensionsChanged':
+        _invokePlatformViewSizeChangeListener(ad, arguments);
+        break;
       default:
         debugPrint('invalid ad event name: $eventName');
     }
@@ -207,6 +218,22 @@ class AdInstanceManager {
     (ad as FluidAdManagerBannerAd)
         .onFluidAdHeightChangedListener
         ?.call(ad, arguments['height'].toDouble());
+  }
+
+  void registerPlatformViewSizeChangeListener(Ad ad, PlatformViewSizeChangeListener listener) {
+    int? adId = adIdFor(ad);
+    if (adId != null) {
+      _platformViewSizeChangeListenerMap[adId] = listener;
+    } else {
+      debugPrint('You must load $ad before trying to render it');
+    }
+  }
+
+  void _invokePlatformViewSizeChangeListener(Ad ad, Map<dynamic, dynamic> arguments) {
+    int? adId = adIdFor(ad);
+    if (adId != null) {
+      _platformViewSizeChangeListenerMap[adId]?.call(arguments['width'].toDouble(), arguments['height'].toDouble());
+    }
   }
 
   void _invokeOnAdLoaded(

@@ -746,7 +746,8 @@ class _AdWidgetState extends State<AdWidget> {
 
 /// A widget for displaying [FluidAdManagerBannerAd].
 ///
-/// This widget adjusts its height based on the platform rendered ad.
+/// You provide this widget with a width, and the height will adjust based on
+/// the platform rendered ad.
 class FluidAdWidget extends StatefulWidget {
   /// Constructs a [FluidAdWidget].
   const FluidAdWidget({Key? key, required this.ad, this.width})
@@ -855,6 +856,128 @@ class _FluidAdWidgetState extends State<FluidAdWidget> {
     return Container(
       height: max(1, height),
       width: widget.width == null ? 1 : max(1, widget.width!),
+      child: platformView,
+    );
+  }
+}
+
+/// An AdWidget that resizes to fit the underlying ad.
+///
+/// If you are using this to show a NativeAd, make sure the NativeAd has a
+/// maximum width and height set. If it's defined to match its parent view then
+/// this widget will grow indefinitely.
+class AutoSizingAdWidget extends StatefulWidget {
+  /// Constructs a [AutoSizingAdWidget].
+  const AutoSizingAdWidget({Key? key, required this.ad}) : super(key: key);
+
+  /// Ad to be displayed as a widget
+  final AdWithView ad;
+
+  @override
+  _AutoSizingAdWidget createState() => _AutoSizingAdWidget();
+}
+
+class _AutoSizingAdWidget extends State<AutoSizingAdWidget> {
+  bool _adIdAlreadyMounted = false;
+  bool _adLoadNotCalled = false;
+  double _height = 0;
+  double _width = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    final int? adId = instanceManager.adIdFor(widget.ad);
+    if (adId != null) {
+      if (instanceManager.isWidgetAdIdMounted(adId)) {
+        _adIdAlreadyMounted = true;
+      }
+      instanceManager.mountWidgetAdId(adId);
+    } else {
+      _adLoadNotCalled = true;
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    final int? adId = instanceManager.adIdFor(widget.ad);
+    if (adId != null) {
+      instanceManager.unmountWidgetAdId(adId);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_adIdAlreadyMounted) {
+      throw FlutterError.fromParts(<DiagnosticsNode>[
+        ErrorSummary('This AdWidget is already in the Widget tree'),
+        ErrorHint(
+            'If you placed this AdWidget in a list, make sure you create a new instance '
+                'in the builder function with a unique ad object.'),
+        ErrorHint(
+            'Make sure you are not using the same ad object in more than one AdWidget.'),
+      ]);
+    }
+    if (_adLoadNotCalled) {
+      throw FlutterError.fromParts(<DiagnosticsNode>[
+        ErrorSummary(
+            'AdWidget requires Ad.load to be called before AdWidget is inserted into the tree'),
+        ErrorHint(
+            'Parameter ad is not loaded. Call Ad.load before AdWidget is inserted into the tree.'),
+      ]);
+    }
+    instanceManager.registerPlatformViewSizeChangeListener(widget.ad, (width, height) {
+      setState(() {
+        _width = width;
+        _height = height;
+      });
+    });
+
+    Widget platformView;
+    double width;
+    double height;
+    Map<String, Object?> creationParams = {
+      'adId': instanceManager.adIdFor(widget.ad),
+      'type': 'AutoSizingAdWidget',
+    };
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      platformView = PlatformViewLink(
+        viewType: '${instanceManager.channel.name}/ad_widget',
+        surfaceFactory:
+            (BuildContext context, PlatformViewController controller) {
+          return AndroidViewSurface(
+            controller: controller as AndroidViewController,
+            gestureRecognizers: const <Factory<OneSequenceGestureRecognizer>>{},
+            hitTestBehavior: PlatformViewHitTestBehavior.opaque,
+          );
+        },
+        onCreatePlatformView: (PlatformViewCreationParams params) {
+          return PlatformViewsService.initSurfaceAndroidView(
+            id: params.id,
+            viewType: '${instanceManager.channel.name}/ad_widget',
+            layoutDirection: TextDirection.ltr,
+            creationParams: creationParams,
+            creationParamsCodec: StandardMessageCodec(),
+          )
+            ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
+            ..create();
+        },
+      );
+      width = _width / MediaQuery.of(context).devicePixelRatio;
+      height = _height / MediaQuery.of(context).devicePixelRatio;
+    } else {
+      platformView = UiKitView(
+        viewType: '${instanceManager.channel.name}/ad_widget',
+        creationParams: creationParams,
+        creationParamsCodec: StandardMessageCodec(),
+      );
+      width = _width;
+      height = _height;
+    }
+
+    return Container(
+      height: max(1, height),
+      width: max(1, width),
       child: platformView,
     );
   }
