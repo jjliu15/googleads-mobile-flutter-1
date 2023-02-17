@@ -168,7 +168,7 @@
 @end
 
 @interface FLTBannerAd
-    : FLTBaseAd <FLTAd, FlutterPlatformView, GADBannerViewDelegate>
+    : FLTBaseAd <FLTAd, FlutterPlatformView, GADBannerViewDelegate, GADAdSizeDelegate>
 - (instancetype _Nonnull)initWithAdUnitId:(NSString *_Nonnull)adUnitId
                                      size:(FLTAdSize *_Nonnull)size
                                   request:(FLTAdRequest *_Nonnull)request

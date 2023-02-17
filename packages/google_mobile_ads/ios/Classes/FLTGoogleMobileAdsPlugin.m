@@ -81,8 +81,8 @@
                       codec:codec];
   [registrar addMethodCallDelegate:instance channel:channel];
 
-  FLTNewGoogleMobileAdsViewFactory *viewFactory =
-      [[FLTNewGoogleMobileAdsViewFactory alloc]
+  FLTGoogleMobileAdsViewFactory *viewFactory =
+      [[FLTGoogleMobileAdsViewFactory alloc]
           initWithManager:instance->_manager];
   [registrar
       registerViewFactory:viewFactory

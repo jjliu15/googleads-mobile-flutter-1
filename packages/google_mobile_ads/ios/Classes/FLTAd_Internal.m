@@ -341,6 +341,7 @@
   GADBannerView *_bannerView;
   FLTAdRequest *_adRequest;
   NSString *_adUnitId;
+  GADAdSize _gadAdSize;
 }
 
 - (instancetype)initWithAdUnitId:(NSString *_Nonnull)adUnitId
@@ -377,6 +378,7 @@
 
 - (void)load {
   self.bannerView.delegate = self;
+  self.bannerView.adSizeDelegate = self;
   [self.bannerView loadRequest:[_adRequest asGADRequest:_adUnitId]];
 }
 
@@ -421,6 +423,13 @@
 #pragma mark - FlutterPlatformView
 - (nonnull UIView *)view {
   return self.bannerView;
+}
+
+#pragma mark - GADAdSizeDelegate
+
+- (void)adView:(GADBannerView *)bannerView
+    willChangeAdSizeTo:(GADAdSize)adSize {
+  _gadAdSize = adSize;
 }
 
 @synthesize manager;

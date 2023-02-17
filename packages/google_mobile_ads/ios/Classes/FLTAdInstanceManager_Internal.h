@@ -63,12 +63,35 @@
 - (void)didFailToPresentFullScreenContentWithError:(id<FLTAd> _Nonnull)ad
                                              error:(NSError *_Nonnull)error;
 - (void)onFluidAdHeightChanged:(id<FLTAd> _Nonnull)ad height:(CGFloat)height;
+- (void)onPlatformViewSizeChanged:(id<FLTAd> _Nonnull)ad
+                            width:(CGFloat)width
+                           height:(CGFloat)height;
 - (void)disposeAllAds;
 @end
 
-@interface FLTNewGoogleMobileAdsViewFactory
+@interface FLTGoogleMobileAdsViewFactory
     : NSObject <FlutterPlatformViewFactory>
 @property(readonly) FLTAdInstanceManager *_Nonnull manager;
 - (instancetype _Nonnull)initWithManager:
     (FLTAdInstanceManager *_Nonnull)manager;
 @end
+
+@protocol FLTAutoSizingPlatformViewContainerDelegate
+@required
+- (void)sizeDidChange:(CGSize)size;
+@end
+
+/** A UIView that delegates size changes of adView. */
+@interface FLTAutoSizingPlatformViewContainer: UIView
+
+@property id<FLTAutoSizingPlatformViewContainerDelegate> _Nullable delegate;
+@property UIView * _Nullable adView;
+
+@end
+
+/** A PlatformView that allows its ad view to resize and notifies size changes to Flutter.  */
+@interface FLTAutoSizingPlatformView: NSObject<FlutterPlatformView, FLTAutoSizingPlatformViewContainerDelegate>
+- (instancetype _Nonnull )initWithAd:(NSObject<FLTAd, FlutterPlatformView> *_Nonnull)ad
+                               manager:(FLTAdInstanceManager *_Nonnull)manager;
+@end
+

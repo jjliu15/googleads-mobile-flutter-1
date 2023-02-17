@@ -214,6 +214,18 @@
                }];
 }
 
+- (void)onPlatformViewSizeChanged:(id<FLTAd> _Nonnull)ad
+                            width:(CGFloat)width
+                            height:(CGFloat)height {
+  [_channel invokeMethod:@"onAdEvent"
+               arguments:@{
+                 @"adId" : ad.adId,
+                 @"eventName" : @"onPlatformViewSizeChanged",
+                 @"height" : [[NSNumber alloc] initWithFloat:height],
+                 @"width" : [[NSNumber alloc] initWithFloat:width]
+               }];
+}
+
 /// Sends an ad event with the provided name.
 - (void)sendAdEvent:(NSString *_Nonnull)eventName ad:(id<FLTAd>)ad {
   [_channel invokeMethod:@"onAdEvent"
@@ -225,7 +237,7 @@
 
 @end
 
-@implementation FLTNewGoogleMobileAdsViewFactory
+@implementation FLTGoogleMobileAdsViewFactory
 - (instancetype)initWithManager:(FLTAdInstanceManager *_Nonnull)manager {
   self = [super init];
   if (self) {
@@ -237,10 +249,25 @@
 - (nonnull NSObject<FlutterPlatformView> *)createWithFrame:(CGRect)frame
                                             viewIdentifier:(int64_t)viewId
                                                  arguments:(id _Nullable)args {
-  NSNumber *adId = args;
-  NSObject<FlutterPlatformView> *view =
-      (NSObject<FlutterPlatformView> *)[_manager adFor:adId];
-
+  NSNumber *adId;
+  NSObject<FlutterPlatformView> *view;
+  if ([args isKindOfClass:[NSNumber class]]) {
+    adId = args;
+    view = (NSObject<FlutterPlatformView> *)[_manager adFor:adId];
+  } else if ([args isKindOfClass:[NSDictionary class]]) {
+    NSDictionary *argsDict = args;
+    NSString *type = argsDict[@"type"];
+    adId = argsDict[@"adId"];
+    if ([type isEqual:@"AdWidget"]) {
+      // TODO - migrate AdWidget here
+    } else if ([type isEqual:@"AutoSizingAdWidget"]) {
+      NSObject<FLTAd, FlutterPlatformView> *ad = (NSObject<FlutterPlatformView> *)[_manager adFor:adId];
+      view = [[FLTAutoSizingPlatformView alloc] initWithAd:ad manager:_manager];
+    } else {
+      // TODO - handle errors
+    }
+  }
+  
   if (!view) {
     NSString *reason = [NSString
         stringWithFormat:
@@ -256,4 +283,52 @@
 - (NSObject<FlutterMessageCodec> *)createArgsCodec {
   return [FlutterStandardMessageCodec sharedInstance];
 }
+@end
+
+@implementation FLTAutoSizingPlatformViewContainer
+- (void)layoutSubviews {
+  [super layoutSubviews];
+  [self.delegate sizeDidChange:_adView.frame.size];
+}
+
+@end
+
+@implementation FLTAutoSizingPlatformView {
+  UIView *_containerView;
+  FLTAdInstanceManager *_manager;
+  NSObject<FLTAd, FlutterPlatformView> *_ad;
+  CGSize _size;
+}
+
+- (instancetype _Nonnull )initWithAd:(NSObject<FLTAd, FlutterPlatformView> *_Nonnull)ad
+                               manager:(FLTAdInstanceManager *_Nonnull)manager {
+  self = [super init];
+  if (self) {
+    _ad = ad;
+    _manager = manager;
+    FLTAutoSizingPlatformViewContainer *container = [[FLTAutoSizingPlatformViewContainer alloc] initWithFrame:CGRectZero];
+    container.adView = _ad.view;
+    [container addSubview:_ad.view];
+    container.delegate = self;
+    _containerView = container;
+  }
+  return self;
+}
+
+
+#pragma mark - FLTAutoSizingPlatformViewContainerDelegate
+- (void)sizeDidChange:(CGSize)size {
+  if (_size.width == size.width && _size.height == size.height) {
+    return;
+  }
+  _size = size;
+  [_manager onPlatformViewSizeChanged:_ad width:size.width height:size.height];
+}
+
+#pragma mark - FlutterPlatformView
+
+- (nonnull UIView *)view {
+  return _containerView;
+}
+
 @end
