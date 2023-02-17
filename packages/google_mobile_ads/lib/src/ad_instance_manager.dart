@@ -154,7 +154,7 @@ class AdInstanceManager {
       case 'onFluidAdHeightChanged':
         _invokeFluidAdHeightChanged(ad, arguments);
         break;
-      case 'onBannerAdDimensionsChanged':
+      case 'onPlatformViewSizeChanged':
         _invokePlatformViewSizeChangeListener(ad, arguments);
         break;
       default:
@@ -205,7 +205,7 @@ class AdInstanceManager {
       case 'onAdClicked':
         _invokeOnAdClicked(ad, eventName);
         break;
-      case 'onBannerAdDimensionsChanged':
+      case 'onPlatformViewSizeChanged':
         _invokePlatformViewSizeChangeListener(ad, arguments);
         break;
       default:
