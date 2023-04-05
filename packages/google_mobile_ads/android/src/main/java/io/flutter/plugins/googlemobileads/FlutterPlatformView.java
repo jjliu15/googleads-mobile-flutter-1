@@ -15,6 +15,7 @@
 package io.flutter.plugins.googlemobileads;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
@@ -41,6 +42,54 @@ class FlutterPlatformView implements PlatformView {
   @Override
   public void dispose() {
     this.view = null;
+  }
+}
+
+interface AdViewSizeChangeListener {
+  void onSizeChanged(int width, int height);
+}
+
+class AutoSizingPlatformViewContainer extends HorizontalScrollView {
+
+  private final AdViewSizeChangeListener listener;
+  private Integer width;
+  private Integer height;
+
+  public AutoSizingPlatformViewContainer(
+    Context context,
+    View childView,
+    AdViewSizeChangeListener listener) {
+    super(context);
+    this.listener = listener;
+    ScrollView scrollView = new ScrollView(context);
+    scrollView.setClipChildren(false);
+    scrollView.setVerticalScrollBarEnabled(false);
+    scrollView.setHorizontalScrollBarEnabled(false);
+    scrollView.addView(childView);
+    addView(scrollView);
+    childView.addOnLayoutChangeListener(
+            new View.OnLayoutChangeListener() {
+              @Override
+              public void onLayoutChange(
+                      View v,
+                      int left,
+                      int top,
+                      int right,
+                      int bottom,
+                      int oldLeft,
+                      int oldTop,
+                      int oldRight,
+                      int oldBottom) {
+                // Forward the new height to its container.
+                int newHeight = v.getMeasuredHeight();
+                int newWidth = v.getMeasuredWidth();
+                if (width == null || height == null || newHeight != height || newWidth != width) {
+                  listener.onSizeChanged(newWidth, newHeight);
+                }
+                width = newWidth;
+                height = newHeight;
+              }
+            });
   }
 }
 

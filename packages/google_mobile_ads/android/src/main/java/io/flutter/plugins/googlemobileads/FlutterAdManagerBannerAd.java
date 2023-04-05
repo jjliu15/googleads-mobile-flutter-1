@@ -17,6 +17,7 @@ package io.flutter.plugins.googlemobileads;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
+import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,7 +32,7 @@ import java.util.List;
  * Wrapper around {@link com.google.android.gms.ads.admanager.AdManagerAdView} for the Google Mobile
  * Ads Plugin.
  */
-class FlutterAdManagerBannerAd extends FlutterAd implements FlutterAdLoadedListener {
+class FlutterAdManagerBannerAd extends FlutterAdWithPlatformView implements FlutterAdLoadedListener {
 
   @NonNull protected final AdInstanceManager manager;
   @NonNull private final String adUnitId;
@@ -103,6 +104,12 @@ class FlutterAdManagerBannerAd extends FlutterAd implements FlutterAdLoadedListe
       return null;
     }
     return new FlutterPlatformView(adView);
+  }
+
+  @Nullable
+  @Override
+  View getView() {
+    return adView;
   }
 
   @Override

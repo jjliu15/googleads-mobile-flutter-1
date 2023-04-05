@@ -57,11 +57,11 @@ class _AutoSizingAdWidgetExampleState extends State<AutoSizingAdWidgetExample> {
               }
 
               if (index == 5 && _bannerAd != null && _bannerIsLoaded) {
-                // return Container(width:100, height:100, child:AdWidget(ad: _bannerAd!));
-                return Align(
-                    alignment: Alignment.center,
-                    child: AutoSizingAdWidget(ad: _bannerAd!),
-                );
+                return Container(width: 500, height: 200, child: AutoSizingAdWidget(ad: _bannerAd!));
+                // return Align(
+                //     alignment: Alignment.center,
+                //     child: AutoSizingAdWidget(ad: _bannerAd!),
+                // );
               }
               return Text(
                 Constants.placeholderText,
@@ -77,7 +77,7 @@ class _AutoSizingAdWidgetExampleState extends State<AutoSizingAdWidgetExample> {
     super.didChangeDependencies();
     // Create the ad objects and load ads.
     _bannerAd = BannerAd(
-        size: AdSize.mediumRectangle,
+        size: AdSize.banner,
         adUnitId: Platform.isAndroid
             ? 'ca-app-pub-3940256099942544/6300978111'
             : 'ca-app-pub-3940256099942544/2934735716',

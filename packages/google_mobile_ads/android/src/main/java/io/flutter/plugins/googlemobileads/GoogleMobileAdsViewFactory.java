@@ -24,12 +24,15 @@ import io.flutter.Log;
 import io.flutter.plugin.common.StandardMessageCodec;
 import io.flutter.plugin.platform.PlatformView;
 import io.flutter.plugin.platform.PlatformViewFactory;
+
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /** Displays loaded FlutterAds for an AdInstanceManager */
 final class GoogleMobileAdsViewFactory extends PlatformViewFactory {
   @NonNull private final AdInstanceManager manager;
+  private final Map<Integer, View> platformViewMap = new ConcurrentHashMap<>();
 
   private static class ErrorTextView implements PlatformView {
     private final TextView textView;
@@ -56,39 +59,43 @@ final class GoogleMobileAdsViewFactory extends PlatformViewFactory {
   }
 
   @Override
+  @SuppressWarnings("unchecked")
   public PlatformView create(Context context, int viewId, Object args) {
-    // TODO - clean this up
-    // TODO - make the viewId the adId, and args just a stringA
+    //
     if (args instanceof Integer) {
       Integer adId = (Integer) args;
-      FlutterAd ad = manager.adForId(adId);
-      if (ad == null || ad.getPlatformView() == null) {
+      assert adId != null;
+      View platformView = platformViewMap.get(adId);
+      if (platformView != null) {
+        return new FlutterPlatformView(platformView);
+      }
+      FlutterAdWithPlatformView ad = (FlutterAdWithPlatformView) manager.adForId(adId);
+      if (ad == null || ad.getView() == null) {
         return getErrorView(context, adId);
       }
-      return ad.getPlatformView();
+      platformViewMap.put(adId, ad.getView());
+      return new FlutterPlatformView(ad.getView());
     } else if (args instanceof Map) {
-      // TODO - handle this cleanly
+      // TODO(jjliu15): Make other ad widgets pass their args as a map
       Map<String, Object> map = (Map<String, Object>) args;
       Integer adId = (Integer) map.get("adId");
-      FlutterAd ad = manager.adForId(adId);
-      if (ad == null || ad.getPlatformView() == null) {
-        return getErrorView(context, adId);
+      assert adId != null;
+      View platformView = platformViewMap.get(adId);
+      if (platformView != null) {
+        return new FlutterPlatformView(platformView);
       }
-      String type = (String) map.get("type");
-      switch (type) {
-        case "AdWidget":
-          // TODO - migrate normal AdWidget to pass a map
-          break;
-        case "AutoSizingAdWidget":
-          // TODO - add type checks
-          FlutterAdWithPlatformView flutterAdWithPlatformView = (FlutterAdWithPlatformView) ad;
-          return new AutoSizingPlatformView(flutterAdWithPlatformView, manager);
-        default:
-          // TODO - add error message
-          return getErrorView(context, adId);
-      }
+      FlutterAdWithPlatformView flutterAdWithPlatformView =
+        (FlutterAdWithPlatformView) manager.adForId(adId);
+      assert flutterAdWithPlatformView != null;
+      platformView = new AutoSizingPlatformViewContainer(manager.getActivity(), flutterAdWithPlatformView.getView(), new AdViewSizeChangeListener() {
+        @Override
+        public void onSizeChanged(int width, int height) {
+          manager.onPlatformViewSizeChanged(adId, width, height);
+        }
+      });
+      platformViewMap.put(adId, platformView);
+      return new FlutterPlatformView(platformView);
     }
-    // TODO - log error
     return getErrorView(context, viewId);
   }
 

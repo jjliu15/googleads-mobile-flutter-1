@@ -16,6 +16,8 @@ package io.flutter.plugins.googlemobileads;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.ads.nativetemplates.TemplateView;
@@ -32,7 +34,7 @@ import io.flutter.plugins.googlemobileads.nativetemplates.FlutterNativeTemplateS
 import java.util.Map;
 
 /** A wrapper for {@link NativeAd}. */
-class FlutterNativeAd extends FlutterAd {
+class FlutterNativeAd extends FlutterAdWithPlatformView {
   private static final String TAG = "FlutterNativeAd";
 
   @NonNull private final AdInstanceManager manager;
@@ -246,6 +248,12 @@ class FlutterNativeAd extends FlutterAd {
       return new FlutterPlatformView(templateView);
     }
     return null;
+  }
+
+  @Nullable
+  @Override
+  public View getView() {
+    return nativeAdView != null ? nativeAdView : templateView;
   }
 
   void onNativeAdLoaded(@NonNull NativeAd nativeAd) {
